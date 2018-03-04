@@ -9,8 +9,8 @@
 - [Amazon EC2 Linux 인스턴스 시작하기](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/EC2_GetStarted.html)
 
 ## EC2 활용
-- Amazon Linux LAMP 웹서버 설치
-- WordPress 블로그 호스팅
+- [Amazon Linux LAMP 웹서버 설치](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/install-LAMP.html)
+- [WordPress 블로그 호스팅](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/hosting-wordpress.html)
 
 ## ELB
 - Amazon Machine Image
