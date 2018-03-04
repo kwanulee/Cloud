@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>ec2-basic</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js Dark theme for JavaScript, CSS and HTML
+ * Based on the slides of the talk “/Reg(exp){2}lained/”
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: white;
+	background: none;
+	text-shadow: 0 -.1em .2em black;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+pre[class*="language-"],
+:not(pre) > code[class*="language-"] {
+	background: hsl(30, 20%, 25%);
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border: .3em solid hsl(30, 20%, 40%);
+	border-radius: .5em;
+	box-shadow: 1px 1px .5em black inset;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .15em .2em .05em;
+	border-radius: .3em;
+	border: .13em solid hsl(30, 20%, 40%);
+	box-shadow: 1px 1px .3em -.1em black inset;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: hsl(30, 20%, 50%);
+}
+
+.token.punctuation {
+	opacity: .7;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+	color: hsl(350, 40%, 70%);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: hsl(75, 70%, 60%);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+	color: hsl(40, 90%, 60%);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: hsl(350, 40%, 70%);
+}
+
+.token.regex,
+.token.important {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+.token.deleted {
+	color: red;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">Amazon EC2 개요</h2>
+
+<hr>
+
+<h3 id="toc_1">Elastic Compute Cloud (EC2)란?</h3>
+
+<ul>
+<li>가상 서버를 필요할 때, 필요한 만큼 사용할 수 있고, 사용한 만큼만 비용을 지급하는 확장식 컴퓨팅 서비스
+
+<ul>
+<li>하드웨어에 선 투자할 필요 없어, 더 빠르게 애플리케이션을 개발하고 배포</li>
+<li>원하는 만큼 가상 서버를 구축하고, 보안 및 네트워크 구성과 스토리지 관리가 가능
+
+<ul>
+<li>AWS Management Console, AWS 명령줄 도구(CLI) 또는 다양한 언어의 SDK를 사용 가능</li>
+</ul></li>
+<li>갑작스런 수요 증대 등 변동사항에 따라 확장하거나 축소할 수 있어 트랙픽 예측 필요성이 줄어 듦</li>
+</ul></li>
+</ul>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TsRBftzZsQo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<hr>
+
+<h3 id="toc_2">EC2 주요 개념 및 기능</h3>
+
+<ul>
+<li><a href="#instance">인스턴스, 인스턴스 유형</a></li>
+<li><a href="#price">인스턴스 요금</a></li>
+<li><a href="#storage">EC2의 스토리지</a></li>
+<li><a href="#ami">아마존 머신 이미지 (AMI)</a></li>
+<li><a href="#lifecycle">인스턴스 생명주기</a></li>
+<li><a href="#region">리전 및 가용 영역</a></li>
+<li><a href="#login">인스턴스 로그인 정보 보호</a></li>
+<li><a href="#sg">보안그룹과 방화벽 기능</a></li>
+</ul>
+
+<hr>
+
+<p><a name="instance"></a> </p>
+
+<h4 id="toc_3">인스턴스, 인스턴스 유형</h4>
+
+<ul>
+<li><strong>인스턴스</strong>: 가상 컴퓨팅 환경</li>
+<li><strong>인스턴스 유형 (Instance type)</strong> : 인스턴스에 사용되는 호스트 컴퓨터의 사양 (CPU, 메모리, 스토리지, 네트워크 대역)을 정의한 것</li>
+<li><p>인스턴스에서 실행하려는 애플리케이션에 따라 <a href="https://aws.amazon.com/ko/ec2/instance-types/">인스턴스 유형</a> 선택</p>
+
+<ul>
+<li><p>범용 인스턴스</p>
+
+<ul>
+<li><p>T2</p>
+
+<p><img src=images/t2-instances.png width=400></p>
+
+<ul>
+<li>기본 수준의 CPU 성능 + <a href="https://aws.amazon.com/ko/ec2/instance-types/#burst">성능 순간 확장 가능</a></li>
+<li>웹서버, 개발자 환경 등, 가끔 빠른 성능이 필요한 경우</li>
+</ul></li>
+<li><p>M4</p>
+
+<ul>
+<li>최신 세대 범용 인스턴스로, 컴퓨팅, 메모리, 네트워크 리소스를 균형 있게 제공</li>
+</ul></li>
+</ul></li>
+<li><p>컴퓨팅 최적화 인스턴스</p></li>
+<li><p>메모리 최적화 인스턴스</p></li>
+<li><p>가속화된 컴퓨팅 인스턴스</p></li>
+<li><p>스토리지 최적화 인스턴스</p></li>
+</ul></li>
+</ul>
+
+<hr>
+
+<p><a name="price"></a> </p>
+
+<h4 id="toc_4">인스턴스 요금</h4>
+
+<ul>
+<li><p><strong>온디맨드 인스턴스</strong>
+    - 장기 약정이나 선결제 금액 없이 시간 단위로 사용한 인스턴스를 기준으로 비용을 지불하는 방식</p>
+
+<ul>
+<li>온디멘드 인스턴스가 적합한 경우
+
+<ul>
+<li>선결제 금액이나 장기 약정 없이 저렴하고 유연하게 Amazon EC2를 사용하기 원하는 사용자</li>
+<li>단기의 갑작스럽거나 예측할 수 없는 워크로드가 있으며, 중단되어서는 안 되는 애플리케이션</li>
+<li>Amazon EC2에서 처음으로 개발 또는 테스트 중인 애플리케이션</li>
+</ul></li>
+</ul></li>
+<li><p><strong>예약 인스턴스</strong></p>
+
+<ul>
+<li>저가의 요금(온디맨드 요금의 최대 75%)을 일시불로 선결제하여 1년 또는 3년 계약 기간 동안 인스턴스를 예약하고 해당 인스턴스를 매우 저렴한 요금으로(시간 단위) 사용하는 방식</li>
+<li>예약 인스턴스가 적합한 경우:
+
+<ul>
+<li>수요가 꾸준한 애플리케이션</li>
+<li>예약 용량이 필요할 수 있는 애플리케이션</li>
+<li>총 컴퓨팅 비용을 절감하기 위해 1년 또는 3년 동안 EC2를 사용하기로 약정할 수 있는 고객</li>
+</ul></li>
+</ul></li>
+<li><p><strong>스팟 인스턴스</strong></p>
+
+<ul>
+<li>특정 인스턴스 유형을 실행하기 위해 지불할 의사가 있는 시간당 최고 가격을 지정하는 방식</li>
+<li>스팟 가격은 Amazon EC2에서 책정, 스팟 인스턴스 용량에 대한 수요와 공급에 따라 주기적으로 변동</li>
+<li>스팟 인스턴스가 적합한 경우:
+
+<ul>
+<li>시작 및 종료 시간이 자유로운 애플리케이션</li>
+<li>컴퓨팅 가격이 매우 저렴해야 만 수익이 나는 애플리케이션</li>
+<li>대량의 서버용량 추가로 긴급히 컴퓨팅 파워가 필요한 사용자</li>
+</ul></li>
+</ul></li>
+<li><p><strong>전용 호스팅</strong></p>
+
+<ul>
+<li>전용 호스팅은 고객 전용의 물리적 EC2 서버</li>
+<li>Windows Server, SQL Server, SUSE Linux Enterprise Server(라이선스 약관에 따름)를 비롯한 기존 서버 한정 소프트웨어 라이선스를 사용할 수 있으므로 비용을 절감 가능</li>
+<li>기업 규정 준수 및 규제 요구 사항을 충족하는 인스턴스 배포 가능</li>
+</ul></li>
+</ul>
+
+<p>** 출처:</p>
+
+<hr>
+
+<p><a name="storage"></a> </p>
+
+<h4 id="toc_5">EC2의  스토리지</h4>
+
+<ul>
+<li><strong>EBS</strong>
+
+<ul>
+<li>높은 가용성과 내구성을 가진 스토리지</li>
+<li>인스턴스 수명에 관계없이 지속됨</li>
+</ul></li>
+<li><strong>인스턴스 스토어</strong>
+
+<ul>
+<li>인스턴스 전용의 일시적인 스토리지 (인스턴스 정지 혹은 삭제 시엔 복원 불가능)</li>
+</ul></li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>EBS</th>
+<th>인스턴스 스토어</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>부팅시간</td>
+<td>1분 이하</td>
+<td>5분이하</td>
+</tr>
+<tr>
+<td>크기제한</td>
+<td>16TiB</td>
+<td>10GiB</td>
+</tr>
+<tr>
+<td>데이터 지속성</td>
+<td>Amazon EBS 볼륨의 데이터는 기본적으로 인스턴스 종료 후에도 유지</td>
+<td>모든 인스턴스 스토어의 데이터는 인스턴스 수명 주기 동안만 유지</td>
+</tr>
+<tr>
+<td>내구성</td>
+<td>99.5%~99.999%</td>
+<td>EBS보다 낮음</td>
+</tr>
+<tr>
+<td>성능</td>
+<td>랜덤 액세스에 강함</td>
+<td>순차적인 액세스에 강함</td>
+</tr>
+<tr>
+<td>용도</td>
+<td>OS나 DB등 지속성과 내구성이 필요한 스토리지</td>
+<td>임시파일, 캐시, 등 삭제되도 문제 없는 스토리지</td>
+</tr>
+</tbody>
+</table>
+
+<p>** 출처: <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/Storage.html">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/Storage.html</a></p>
+
+<hr>
+
+<p><a name="ami"></a> </p>
+
+<h4 id="toc_6">아마존 머신 이미지 (AMI)</h4>
+
+<ul>
+<li><p><strong>아마존 머신 이미지 (AMI)</strong>는 필요한 소프트웨어 (예, 운영체제, 애플리케이션 서버, 애플리케이션)가 이미 구성되어 있는 템플릿</p>
+
+<ul>
+<li>하나의 AMI로 여러 인스턴스를 실행시킬 수 있음</li>
+<li>실행된 인스턴스는 중지/종료 혹은 실패하기 전까지 계혹 실행</li>
+<li>인스턴스가 실패하면 AMI에서 새로 실행</li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/architecture_ami_instance.png" alt=""></p></li>
+<li><p>공개된 다양한 AMI</p>
+
+<ul>
+<li>AWS에서는 자주 사용되는 다양한 AMI를 공개하여 게시하고 있음</li>
+<li>AWS 개발자 커뮤니티 회원들이 올린 자체 구성 AMI</li>
+<li>사용자 정의 AMI</li>
+</ul></li>
+<li><p>AMI 종류</p>
+
+<ul>
+<li><strong>인스턴스 스토어 기반 (Instance Store-Backed)</strong>
+
+<ul>
+<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 S3에 저장된 템플릿에서 생성된 인스턴스 스토어 볼륨인 경우, <em>인스턴스를 정지 또는 삭제하면 인스턴스 스토어는 사라짐</em></li>
+</ul></li>
+<li><strong>아마존 EBS 기반 (Amazon EBS-Backed)</strong>
+
+<ul>
+<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 EBS 볼륨인 경우, <em>인스턴스를 삭제해도 살아있음</em></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>** 출처: <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ComponentsAMIs.html">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ComponentsAMIs.html</a></p>
+
+<hr>
+
+<p><a name="lifecycle"></a> </p>
+
+<h4 id="toc_7">인스턴스 수명주기</h4>
+
+<ul>
+<li>인스턴스 스토어 기반 인스턴스는 중지 후 시작을 할 수 없음</li>
+<li>running 상태 있는 동안 비용 청구, (주의, 인스턴스에 접속하지 않아도 비용청구됨)</li>
+<li>stopped 상태에서는 인스턴스 사용 요금, 데이터 전송 요금은 부가되지 않으나, EBS 볼륨에 대한 요금은 부과됨</li>
+<li>인스턴스 재시작시, 기존 호스트 컴퓨터의 인스턴스 스토어 볼륨 데이터는 손실되고, EC2-Classic에서 실행 중인 경우 새로운 IPv4 주소를 받음.</li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/instance_lifecycle.png" alt=""></p>
+
+<p>** 출처: <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ec2-instance-lifecycle.html</a></p>
+
+<hr>
+
+<p><a name="region"></a> </p>
+
+<h4 id="toc_8">리전 및 가용영역</h4>
+
+<ul>
+<li><p><strong>리전</strong></p>
+
+<ul>
+<li>AWS의 각 서비스가 제공되는 지역, 예: 서울, 미국동부 등</li>
+<li>리전에 따라 사용할 수 있는 서비스가 다름</li>
+</ul></li>
+<li><p><strong>가용영역</strong></p>
+
+<ul>
+<li>독립된 데이터 센터</li>
+<li>모든 리전에 두 개 이상의 가용 영역이 존재</li>
+<li>한 리전의 가용 영역들은 고속 회선을 통해 연결됨</li>
+<li>복수의 가용 영역에 걸쳐 인스턴스 배포시, 단련적 IP 주소를 사용하여 한 가용영역에서 발생한 인스턴스의 장애를 다른 가용 영역의 인스턴스로 마스킹 할 수 있음. </li>
+</ul></li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/aws_regions.png" alt=""></p>
+
+<p>** 출처: <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/using-regions-availability-zones.html">https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/using-regions-availability-zones.html</a></p>
+
+<hr>
+
+<p><a name="login"></a> </p>
+
+<h4 id="toc_9">인스턴스 로그인 정보 보호</h4>
+
+<ul>
+<li>AWS에서는 공개 키 암호화를 사용하여 인스턴스에 대한 로그인 정보를 암호화 및 해독합니다.</li>
+<li><p>키 페어는 <strong>공개키</strong>와 <strong>개인키</strong>로 구성된다.</p>
+
+<ul>
+<li>사용자는 개인키(프라이빗 키)는 디지털 서명을 생성하는 데 사용</li>
+<li>AWS는 공개키를 사용하여 디지털 서명을 검증</li>
+</ul>
+
+<p><img src=images/public-private-key.png width=500></p></li>
+<li><p>인스턴스 로그인 과정</p>
+
+<ol>
+<li><a href="create-key-pair.html">키 페어 생성 (준비작업)</a></li>
+<li>인스턴스 시작시 키 페어 이름 지정</li>
+<li>인스턴스 연결 시 개인키 제공</li>
+</ol></li>
+</ul>
+
+<hr>
+
+<h4 id="toc_10">보안 그룹 생성</h4>
+
+<ul>
+<li><p>보안 그룹은 인스턴스에 대한 방화벽 역할을 하여 인스턴스 수준에서 통신의 입출력을 제어하기 위해 있는 기능</p>
+
+<ul>
+<li>서버에서 나가는 통신 (아웃바운드) 포트는 모두 열려 있음</li>
+<li>서버에 들어오는 통신 (인바운드) 포트는 기본적으로 모두 닫혀 있고, 필요한 포트만 열어 사용</li>
+</ul></li>
+<li><p>여러 리전에서 인스턴스를 시작하려면 각 리전에서 보안 그룹을 생성해야 함.</p></li>
+<li><p>[<strong>실습</strong>] <a href="create-security-group.html">보안 그룹 생성하기</a></p></li>
+</ul>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
