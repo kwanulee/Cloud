@@ -366,8 +366,6 @@ pre[class*="language-"] {
 </ul></li>
 </ul>
 
-<p>** 출처:</p>
-
 <hr>
 
 <p><a name="storage"></a> </p>
@@ -444,8 +442,6 @@ pre[class*="language-"] {
 
 <ul>
 <li>하나의 AMI로 여러 인스턴스를 실행시킬 수 있음</li>
-<li>실행된 인스턴스는 중지/종료 혹은 실패하기 전까지 계혹 실행</li>
-<li>인스턴스가 실패하면 AMI에서 새로 실행</li>
 </ul>
 
 <p><img src="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/architecture_ami_instance.png" alt=""></p></li>
@@ -459,15 +455,15 @@ pre[class*="language-"] {
 <li><p>AMI 종류</p>
 
 <ul>
-<li><strong>인스턴스 스토어 기반 (Instance Store-Backed)</strong>
+<li><p><strong>인스턴스 스토어 기반 (Instance Store-Backed)</strong> AMI</p>
 
 <ul>
-<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 S3에 저장된 템플릿에서 생성된 인스턴스 스토어 볼륨인 경우, <em>인스턴스를 정지 또는 삭제하면 인스턴스 스토어는 사라짐</em></li>
+<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 S3에 저장된 템플릿에서 생성된 인스턴스 스토어 볼륨인 경우 </li>
 </ul></li>
-<li><strong>아마존 EBS 기반 (Amazon EBS-Backed)</strong>
+<li><p><strong>아마존 EBS 기반 (Amazon EBS-Backed)</strong> AMI</p>
 
 <ul>
-<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 EBS 볼륨인 경우, <em>인스턴스를 삭제해도 살아있음</em></li>
+<li>AMI의 인스턴스가 실행되는 <a href="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html">루트 디바이스</a>가 아마존 EBS 볼륨인 경우 </li>
 </ul></li>
 </ul></li>
 </ul>
@@ -481,10 +477,17 @@ pre[class*="language-"] {
 <h4 id="toc_7">인스턴스 수명주기</h4>
 
 <ul>
-<li>인스턴스 스토어 기반 인스턴스는 중지 후 시작을 할 수 없음</li>
-<li>running 상태 있는 동안 비용 청구, (주의, 인스턴스에 접속하지 않아도 비용청구됨)</li>
-<li>stopped 상태에서는 인스턴스 사용 요금, 데이터 전송 요금은 부가되지 않으나, EBS 볼륨에 대한 요금은 부과됨</li>
-<li>인스턴스 재시작시, 기존 호스트 컴퓨터의 인스턴스 스토어 볼륨 데이터는 손실되고, EC2-Classic에서 실행 중인 경우 새로운 IPv4 주소를 받음.</li>
+<li><strong>인스턴스 스토어</strong> 기반 인스턴스는 <strong>중지 후 시작을 할 수 없음</strong>, 반면에 <strong>EBS</strong> 기반 인스턴스는 <strong>중지 후 시작 가능</strong></li>
+<li><strong>running</strong> 상태 있는 동안 비용 청구, (주의, 인스턴스에 접속하지 않아도 비용청구됨)</li>
+<li><strong>stopped</strong> 상태에서는 인스턴스 사용 요금, 데이터 전송 요금은 부가되지 않으나, EBS 볼륨에 대한 요금은 부과됨</li>
+<li>인스턴스 <strong>재시작(중지 후 시작)</strong>시, 
+
+<ul>
+<li>이전 호스트 컴퓨터의 인스턴스 스토어 볼륨에 있는 데이터가 모두 손실</li>
+<li>모든 Amazon EBS 볼륨이 인스턴스에 연결된 상태로 유지되고 해당 데이터도 남아 있음</li>
+<li>프라이빗 IP 주소는 유지, 퍼블릭 IP는 변경됨 (EC2-VPC 인 경우)</li>
+</ul></li>
+<li>인스턴스 <strong>재부팅</strong>시, 인스턴스가 동일 호스트 컴퓨터에서 유지되며 해당 퍼블릭 DNS 이름, 프라이빗 IP 주소 및 인스턴스 스토어 볼륨의 모든 데이터가 그대로 유지됨.</li>
 </ul>
 
 <p><img src="https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/instance_lifecycle.png" alt=""></p>

@@ -71,8 +71,6 @@
 	- Windows Server, SQL Server, SUSE Linux Enterprise Server(라이선스 약관에 따름)를 비롯한 기존 서버 한정 소프트웨어 라이선스를 사용할 수 있으므로 비용을 절감 가능
 	- 기업 규정 준수 및 규제 요구 사항을 충족하는 인스턴스 배포 가능
 
-** 출처:
-
 ---
 <a name="storage"></a> 
 #### EC2의  스토리지
@@ -98,8 +96,6 @@
 #### 아마존 머신 이미지 (AMI)
 - **아마존 머신 이미지 (AMI)**는 필요한 소프트웨어 (예, 운영체제, 애플리케이션 서버, 애플리케이션)가 이미 구성되어 있는 템플릿
 	- 하나의 AMI로 여러 인스턴스를 실행시킬 수 있음
-	- 실행된 인스턴스는 중지/종료 혹은 실패하기 전까지 계혹 실행
-	- 인스턴스가 실패하면 AMI에서 새로 실행
 
 	![](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/architecture_ami_instance.png)
 	
@@ -109,10 +105,11 @@
 	- 사용자 정의 AMI
 
 - AMI 종류
-	- **인스턴스 스토어 기반 (Instance Store-Backed)**
-		- AMI의 인스턴스가 실행되는 [루트 디바이스](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html)가 아마존 S3에 저장된 템플릿에서 생성된 인스턴스 스토어 볼륨인 경우, *인스턴스를 정지 또는 삭제하면 인스턴스 스토어는 사라짐*
-	- **아마존 EBS 기반 (Amazon EBS-Backed)**
-		- AMI의 인스턴스가 실행되는 [루트 디바이스](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html)가 아마존 EBS 볼륨인 경우, *인스턴스를 삭제해도 살아있음*
+	- **인스턴스 스토어 기반 (Instance Store-Backed)** AMI
+		- AMI의 인스턴스가 실행되는 [루트 디바이스](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html)가 아마존 S3에 저장된 템플릿에서 생성된 인스턴스 스토어 볼륨인 경우 
+			
+	- **아마존 EBS 기반 (Amazon EBS-Backed)** AMI
+		- AMI의 인스턴스가 실행되는 [루트 디바이스](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/RootDeviceStorage.html)가 아마존 EBS 볼륨인 경우 
 
 
 ** 출처: https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/ComponentsAMIs.html
@@ -120,10 +117,14 @@
 ---
 <a name="lifecycle"></a> 
 #### 인스턴스 수명주기
-- 인스턴스 스토어 기반 인스턴스는 중지 후 시작을 할 수 없음
-- running 상태 있는 동안 비용 청구, (주의, 인스턴스에 접속하지 않아도 비용청구됨)
-- stopped 상태에서는 인스턴스 사용 요금, 데이터 전송 요금은 부가되지 않으나, EBS 볼륨에 대한 요금은 부과됨
-- 인스턴스 재시작시, 기존 호스트 컴퓨터의 인스턴스 스토어 볼륨 데이터는 손실되고, EC2-Classic에서 실행 중인 경우 새로운 IPv4 주소를 받음.
+- **인스턴스 스토어** 기반 인스턴스는 **중지 후 시작을 할 수 없음**, 반면에 **EBS** 기반 인스턴스는 **중지 후 시작 가능**
+- **running** 상태 있는 동안 비용 청구, (주의, 인스턴스에 접속하지 않아도 비용청구됨)
+- **stopped** 상태에서는 인스턴스 사용 요금, 데이터 전송 요금은 부가되지 않으나, EBS 볼륨에 대한 요금은 부과됨
+- 인스턴스 **재시작(중지 후 시작)**시, 
+	- 이전 호스트 컴퓨터의 인스턴스 스토어 볼륨에 있는 데이터가 모두 손실
+	- 모든 Amazon EBS 볼륨이 인스턴스에 연결된 상태로 유지되고 해당 데이터도 남아 있음
+	- 프라이빗 IP 주소는 유지, 퍼블릭 IP는 변경됨 (EC2-VPC 인 경우)
+- 인스턴스 **재부팅**시, 인스턴스가 동일 호스트 컴퓨터에서 유지되며 해당 퍼블릭 DNS 이름, 프라이빗 IP 주소 및 인스턴스 스토어 볼륨의 모든 데이터가 그대로 유지됨.
 
 ![](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/images/instance_lifecycle.png)
 
