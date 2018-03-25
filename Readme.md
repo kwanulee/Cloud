@@ -13,7 +13,7 @@
 - [WordPress 블로그 호스팅](https://docs.aws.amazon.com/ko_kr/AWSEC2/latest/UserGuide/hosting-wordpress.html)
 
 ## ELB
-- [Amazon Machine Image](ami.md)
+- [Amazon Machine Image](docs/ami.md)
 - [Amazon Elastic Load Balancing](docs/elb.md)
 
 ## Auto Scaling
