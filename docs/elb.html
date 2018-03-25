@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>elb</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js Dark theme for JavaScript, CSS and HTML
+ * Based on the slides of the talk “/Reg(exp){2}lained/”
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: white;
+	background: none;
+	text-shadow: 0 -.1em .2em black;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+pre[class*="language-"],
+:not(pre) > code[class*="language-"] {
+	background: hsl(30, 20%, 25%);
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border: .3em solid hsl(30, 20%, 40%);
+	border-radius: .5em;
+	box-shadow: 1px 1px .5em black inset;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .15em .2em .05em;
+	border-radius: .3em;
+	border: .13em solid hsl(30, 20%, 40%);
+	box-shadow: 1px 1px .3em -.1em black inset;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: hsl(30, 20%, 50%);
+}
+
+.token.punctuation {
+	opacity: .7;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
+	color: hsl(350, 40%, 70%);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: hsl(75, 70%, 60%);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string,
+.token.variable {
+	color: hsl(40, 90%, 60%);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: hsl(350, 40%, 70%);
+}
+
+.token.regex,
+.token.important {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+
+.token.deleted {
+	color: red;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">Elastic Load Balancing</h2>
+
+<h3 id="toc_1">로드 밸런싱이란?</h3>
+
+<ul>
+<li><p>“In computing, load balancing improves the distribution of workloads across multiple computing resources, such as computers, a computer cluster, network links, central processing units, or disk drives…” (<a href="https://en.wikipedia.org/wiki/Load_balancing_(computing)">https://en.wikipedia.org/wiki/Load_balancing_(computing)</a>)</p>
+
+<p><img src="http://tutorials.jenkov.com/images/software-architecture/load-balancing-1.png" alt=""></p></li>
+</ul>
+
+<h3 id="toc_2">Elastic Load Balancing (ELB) 란?</h3>
+
+<ul>
+<li><p><strong>ELB</strong>는 AWS에서 제공하고 있는 로드 밸런싱 서비스</p>
+
+<ul>
+<li>하나 이상의  가용영역에 있는 EC2인스턴스에 애플리케이션 트래픽을 분산시킴으로써 애플리케이션의 결함포용성을 증진시킴</li>
+<li>로드 밸런서는 클라이언트를 위한 단일 접촉점 역할</li>
+<li>로드 밸런서에 EC2인스턴스를 필요에 따라 추가 혹은 삭제 할 수 있음</li>
+<li>로드 밸런서는 등록된 인스턴스의 건강상태를 검사하여, 건강한 인스턴스에만 클라이언트 요청을 전송.</li>
+<li>건강에 문제있는 인스턴스가 다시 건강한 상태가 되면 로드 밸런서는 다시 클라이언트 요청을 전송</li>
+<li>로드 밸런서는 암호화/복호화 작업을 인스턴스 대신에 수행하여 인스턴스가 본연의 업무에 집중할 수 있도록 해줄수 있음</li>
+</ul></li>
+<li><p>타입</p>
+
+<ul>
+<li>클래식 로드 밸런서 (  Classic Load Balancer) – ELB version1</li>
+<li>애플리케이션 로드 밸런서 (Application Load Balancer) – ELB version2</li>
+<li>네트워크 로드 밸런서 – ELB version2</li>
+</ul></li>
+<li><p><a href="https://aws.amazon.com/ko/elasticloadbalancing/details/#compare">Elastic Load Balancing 제품 비교</a></p></li>
+</ul>
+
+<h3 id="toc_3">가용 영역 및 로드 밸런서 노드</h3>
+
+<ul>
+<li>로드 밸런서에서 가용 영역을 활성화하면 Elastic Load Balancing이 해당 가용 영역에서 로드 밸런서 노드를 생성
+
+<ul>
+<li>가용 영역에 대상을 등록하였지만 가용 영역이 활성화되지 않는 경우 등록된 대상은 트래픽을 수신하지 않음</li>
+<li>여러 개의 가요 영역을 활성화하는 것이 좋음</li>
+<li>가용 영역을 비활성화하면 해당 가용 영역의 대상은 로드 밸런서에 등록된 상태로 유지되지만 로드 밸런서는 대상으로 트래픽을 라우팅하지 않음</li>
+</ul></li>
+</ul>
+
+<h4 id="toc_4">교차 영역 로드 밸런싱</h4>
+
+<ul>
+<li><p>교차 영역 로드 밸런싱을 활성화하면 각 로드 밸런서 노드가 활성화된 모든 가용 영역에 있는 등록된 대상 간에 트래픽을 분산</p>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/userguide/images/cross_zone_load_balancing_enabled.png" alt=""></p></li>
+<li><p>교차 영역 로드 밸런싱이 비활성화된 경우 가용 영역 A에 있는 각 2개의 대상은 25%의 트래픽을 수신하고 가용 영역 B에 있는 각 8개의 대상은 트래픽의 6.25%를 수신<br>
+<img src="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/userguide/images/cross_zone_load_balancing_disabled.png" alt=""></p></li>
+<li><p>Application Load Balancer에서는 교차 영역 로드 밸런싱이 항상 활성화</p></li>
+</ul>
+
+<h3 id="toc_5">Internal Load Balancer vs. Internet Facing Load Balancer</h3>
+
+<ul>
+<li>Internet Facing Load Balancer
+
+<ul>
+<li>로드 밸런서의 DNS 이름과 공용 IP 주소가 대응되어 있어, 클라이언트 요청을 인터넷을 통해 로드 밸런서에 연결시킬 수 있음</li>
+</ul></li>
+<li>Internal Load Balancer
+
+<ul>
+<li>로드 밸런서의 DNS 이름이 가상 네트워크 환경인 VPC (Virtual Private Cloud) 의 사설 IP주소에 대응되어 있어, VPC 로의 접근권한을 가진 클라이언트의 요청을 VPC 내의 로드 밸러서를 통해 내부 인스턴스로 전달</li>
+</ul></li>
+</ul>
+
+<p><img src="images/internalLB.png" alt=""></p>
+
+<h2 id="toc_6">1. 클래식 로드 밸런서</h2>
+
+<ul>
+<li><p>클라이언트로부터의 요청을 다중의 가용영역에 위치한 다중의 EC2 인스턴스로 분배</p>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/classic/images/load_balancer.png" alt=""></p></li>
+<li><p><strong>리스너 (Listener)</strong></p>
+
+<ul>
+<li>로드 밸런서에 설정된 프로토콜과 포트로의 클라이언트 연결 요청을 검사</li>
+<li>클라이언트 연결 요청을 등록된 인스턴스들에 설정된 프로토콜과 포트를 통해 전달</li>
+<li>로드 밸랜서에 하나 이상의 리스너 등록 가능</li>
+</ul></li>
+<li><p><strong>헬스 체크 (Health Check)</strong></p>
+
+<ul>
+<li>등록된 인스턴스들의 건강상태를 모니터링</li>
+<li>로드 밸런서는 오직 정상적인 인스턴스에만 요청을 보냄</li>
+</ul>
+
+<p><img src="images/classic-elb.png" alt=""></p></li>
+</ul>
+
+<h3 id="toc_7">1.1 <a href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/classic/elb-getting-started.html">자습서: 클래식 로드 밸런서 생성</a></h3>
+
+<h3 id="toc_8">1.2 <a href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/classic/elb-sticky-sessions.html">고정 세션 구성</a></h3>
+
+<h2 id="toc_9">2. 애플리케이션 로드 밸런서</h2>
+
+<ul>
+<li>리스너
+
+<ul>
+<li>클라이언트로부터의 연결 요청을 설정된 프로토콜과 포트를 이용해 검사하고, 하나 이상의 대상 그룹에 연결 요청을 설정된 규칙에 따라 전달
+
+<ul>
+<li>규칙: 대상 그룹, 조건, 우선순위 </li>
+</ul></li>
+</ul></li>
+<li>대상 그룹 (Target Group)
+
+<ul>
+<li>설정된 프로토콜과 포트 번호를 사용해 등록된 대상들에 요청을 전달</li>
+<li>하나의 대상이 여러 대상 그룹에 등록될 수 있음</li>
+<li>헬스 체크는 대상 그룹별로 설정되며, 등록된 모든 대상에 대해서 헬스 체크를 수행</li>
+</ul></li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/images/component_architecture.png" alt=""></p>
+
+<ul>
+<li>클래식 로드 밸런서 대비 애플리케이션 로드 밸런서의 이점
+
+<ul>
+<li>경로 기반 라우팅을 지원</li>
+<li>호스트 기반 라우팅을 지원</li>
+<li>단일 EC2 인스턴스의 여러 애플리케이션으로 요청을 라우팅하는 것을 지원</li>
+</ul></li>
+</ul>
+
+<h3 id="toc_10">2.1 <a href="https://docs.aws.amazon.com/ko_kr/elasticloadbalancing/latest/application/application-load-balancer-getting-started.html">Application Load Balancer 시작하기</a></h3>
+
+<h3 id="toc_11">2.2 경로 기반 라우팅 실습</h3>
+
+<ul>
+<li><p>개념</p>
+
+<ul>
+<li>URL 경로를 기반으로 클라이언트 요청을 전달</li>
+<li>URL 경로를 기반으로 라우팅하는 규칙을 리스너에 추가</li>
+</ul>
+
+<p><img src="images/path-based-routing.png" alt=""></p></li>
+<li><p><strong>사전준비</strong></p>
+
+<ul>
+<li>두개의 다른 가용영역에서 있는 3개의 EC2인스턴스들을 준비한다
+
+<ul>
+<li>하나의 가용영역은 2개의 EC2 인스턴스 </li>
+<li>다른 하나의 가용영역은 1개의 EC2 인스턴스</li>
+</ul></li>
+<li>각 인스턴스들의 웹서버 문서 루트(/var/www/html/) 하위에 다음 두 파일 생성
+
+<ul>
+<li>index.html - 인스턴스의 메인 홈페이지</li>
+<li>/video/index.html – 인스턴스 별로 각 파일의 콘덴츠를 별도로 정의</li>
+<li>/image/index.html - 인스턴스 별로 각 파일의 콘덴츠를 별도로 정의</li>
+</ul></li>
+<li>하나의 가용영역에서 있는 2개의 인스턴스를 실행
+
+<ul>
+<li>이 두개의 인스턴스는 my-target1의 대상 그룹에 등록될 것임</li>
+</ul></li>
+<li>다른 하나의 가용영역에 있는 1개의 인스턴스를 실행
+
+<ul>
+<li>이 인스턴스는 이번 실습에서 my-target2의 대상 그룹에 등록될 것임</li>
+</ul></li>
+<li>EC2 인스턴스의 보안그룹이 80 포트의 HTTP 접근을 허용하는지 확인</li>
+<li>아파치 웹서버 설치 및 실행하여, 웹서버의 웹페이지가 EC2 인스턴스의 DNS 이름으로 로드되는지 확인</li>
+</ul></li>
+<li><p><strong>단계1: 첫번째 대상그룹 생성</strong></p>
+
+<ol>
+<li>왼쪽 탐색창 메뉴의 [<strong>LOAD BALANCING</strong>]의 [<strong>대상 그룹(Target Groups)</strong>] 선택</li>
+<li>[<strong>대상 그룹 생성(Create target group)</strong>] 클릭
+
+<ul>
+<li>[<strong>대상 그룹 이름(Target group name)</strong>] 에서 대상 그룹 이름 지정 (예, <em>my-target1</em>)</li>
+<li>나머지 항목(프로토콜, 포트, 대상 유형, VPC, 상태 검사 설정(프로토콜, 경로))은 기본값 유지</li>
+<li>[<strong>생성e</strong>] 클릭</li>
+</ul></li>
+<li>새롭게 생성된 대상 그룹 (<em>my-target1</em>)을 선택</li>
+<li>[<strong>대상(Targets)</strong>] 탭의 [<strong>편집(Edit)</strong>] 클릭</li>
+<li>하나이상의 인스턴스를 선택하고, [<strong>등록된 항목에 추가(Add to registered)</strong>] 클릭 후, [<strong>저장(Save)</strong>] 클릭</li>
+</ol>
+
+<p><img src="images/addtoregistered.png" alt=""></p></li>
+<li><p><strong>단계2: 두번째 대상그룹 생성</strong></p>
+
+<ol>
+<li>[<strong>대상 그룹 생성(Create target group)</strong>] 클릭
+
+<ul>
+<li>[<strong>대상 그룹 이름(Target group name)</strong>] 에서 대상 그룹 이름 지정 (예, <em>my-target2</em>)</li>
+<li>나머지 항목(프로토콜, 포트, 대상 유형, VPC, 상태 검사 설정(프로토콜, 경로))은 기본값 유지</li>
+<li>[<strong>생성</strong>] 클릭</li>
+</ul></li>
+<li>새롭게 생성된 대상 그룹 (<em>my-target2</em>)을 선택</li>
+<li>[<strong>대상(Targets)</strong>] 탭의 [<strong>편집(Edit)</strong>] 클릭</li>
+<li>하나이상의 인스턴스를 선택하고, [<strong>등록된 항목에 추가(Add to registered)</strong>] 클릭 후, [<strong>저장(Save)</strong>] 클릭</li>
+</ol>
+
+<p><img src="images/addtoregistered2.png" alt=""></p></li>
+<li><p><strong>단계3:로드 밸런서 타입 선택</strong></p>
+
+<ol>
+<li>왼쪽 탐색 창 매뉴의 [<strong>LOAD BALANCING</strong>]에서 [<strong>로드밸런서(Load Balancers)</strong>]를 선택</li>
+<li>[<strong>로드 밸런서 생성(Create Load Balancer)</strong>] 클릭</li>
+<li><strong>Application Load Balancer</strong>의 <strong>생성</strong>를 클릭</li>
+</ol></li>
+<li><p><strong>단계4: 로드 밸런서 구성</strong></p>
+
+<ol>
+<li>[<strong>이름</strong>] : 이름 입력 (해당 리전에서 고유한 이름): 예, <em>path-based-alb</em></li>
+<li>[<strong>방식</strong>]: 기본값 유지 (<em>인터넷 연결</em>)</li>
+<li>[<strong>IP 주소 유형</strong>]: 기본값 유지 (<em>ipv4</em>)</li>
+<li>[<strong>리스너</strong>]: 기본값 유지 (프로토콜 : HTTP, 포트: 80)</li>
+<li>[<strong>가용 영역</strong>]: 
+
+<ul>
+<li>VPC를 선택: 기본 VPC 선택 유지</li>
+<li>두개 이상의 가용 영역의 서브넷 선택 </li>
+</ul></li>
+<li>[<strong>Next: 보안 설정 구성</strong>] 클릭</li>
+</ol></li>
+<li><p><strong>단계 5: 로드 밸런서에 보안그룹 할당</strong> </p>
+
+<ol>
+<li>[<strong>단계 3: 보안 그룹 구성</strong>] 화면에서 [<strong>기본 보안 그룹 선택</strong>] 항목 선택</li>
+<li>이전 실습에서 사용했던 보안그룹 선택</li>
+<li>[<strong>Next: 라우팅 구성</strong>] 클릭</li>
+</ol></li>
+<li><p><strong>단계 6: 라우팅 구성</strong></p>
+
+<ol>
+<li>[<strong>단계 4: 라우팅 구성</strong>] 화면에서 다음 설정
+
+<ul>
+<li>[<strong>대상 그룹</strong>] : Existing target group 선택</li>
+<li>[<strong>이름</strong>]: 첫번째 대상 그룹 (<em>my-target1</em>) 선택</li>
+<li>나머지 항목은 기본값 그대로 사용</li>
+</ul></li>
+<li>[<strong>다음: 대상 등록</strong>] 클릭</li>
+<li>[<strong>단계 5: 대상 등록</strong>] 화면에서, [<strong>다음: 검토</strong>] 클릭</li>
+<li>[<strong>단계 6: 검토</strong>] 화면에서, [<strong>생성</strong>] 클릭</li>
+<li>로드밸런서가 성공적으로 생성되었으면, [<strong>닫기</strong>] 클릭</li>
+</ol></li>
+<li><p><strong>단계 7: 리스너 설정</strong></p>
+
+<ol>
+<li>새롭게 생성된 로드 밸런서를 선택</li>
+<li><p>[<strong>리스너</strong>] 탭에서 생성된 리스너의 규칙을 보기 위해, [<strong>규칙 보기/편집</strong>] 클릭</p></li>
+<li><p>화면 상단의 [<strong>(+)</strong>]을 클릭한 후, [<strong>(+)Insert Rule</strong>] 클릭
+<img src="images/add-rule.png" alt=""></p></li>
+<li><p>경로 기반 라우팅으로서 <em>/video/</em>*의 요청에 대해서 <em>my-target1</em>으로 전달하는 규칙 추가</p>
+
+<ul>
+<li>아래와 같이 설정후 [<strong>Save</strong>]선택 
+<img src="images/path-based-routing-rule1.png" alt=""></li>
+</ul></li>
+<li><p>같은 방법으로, 경로 기반 라우팅으로서 <em>/image/</em>*의 요청에 대해서 <em>my-target2</em>으로 전달하는 규칙 추가</p></li>
+<li><p>두개의 규칙을 추가 한 후의 결과
+<img src="images/path-based-routing-rule-result.png" alt=""></p></li>
+</ol></li>
+<li><p><strong>단계 8: 테스트</strong></p>
+
+<ol>
+<li>왼쪽 탐색 창 메뉴의 [<strong>LOAD BALANCING</strong>]의 [<strong>로드 밸런서</strong>]를 선택</li>
+<li><p>[<strong>설명</strong>] 탭에서 로드밸런서의 DNS 이름 값을 복사해서 웹브라우저에서 테스트</p>
+
+<ul>
+<li><p>아래의 주소를 입력후, 새로고침을  3번이상 수행하여 결과를 확인</p>
+
+<ul>
+<li><a href="http://path-based-elb-xxx.elb.amazonaws.com/video/">http://path-based-elb-xxx.elb.amazonaws.com/video/</a> 
+
+<ul>
+<li>my-target1 대상 그룹의 인스턴스들이 Response</li>
+</ul></li>
+<li><a href="http://path-based-elb-xxx.elb.amazonaws.com/">http://path-based-elb-xxx.elb.amazonaws.com/</a>
+
+<ul>
+<li>my-target1 대상 그룹의 인스턴스들이 Response</li>
+</ul></li>
+<li><p><a href="http://path-based-elb-xxx.elb.amazonaws.com/image/">http://path-based-elb-xxx.elb.amazonaws.com/image/</a> </p>
+
+<ul>
+<li>my-target2 대상 그룹의 인스턴스들이 Response</li>
+</ul></li>
+<li><p>위의 (path-based-elb-xxx.elb.amazonaws.com) 주소는 로드밸런서의 DNS name 값 임</p></li>
+</ul></li>
+</ul></li>
+</ol></li>
+</ul>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
