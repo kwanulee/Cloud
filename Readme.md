@@ -17,9 +17,8 @@
 - [Amazon Elastic Load Balancing](docs/elb.md)
 
 ## Auto Scaling
-- Auto Scaling 소개
-- Auto Scaling 설정
-- Auto Scaling 테스트
+- [Auto Scaling 소개](docs/auto-scaling-basic.md)
+- [Auto Scaling 동적 조정 실습](docs/auto-scaling-practice.md)
 
 ## S3
 - Amazon S3 소개
