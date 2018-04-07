@@ -109,7 +109,7 @@
 ---
 ### 4단계: 테스트
 
-#### 아파지 웹서버 성능검사도구 : ab (apache benchmarking)
+#### 아파치 웹서버 성능검사도구 : ab (apache benchmarking)
 - 형식
 
 	ab [-n request] [ -c concurrency] http://hostname
