@@ -21,14 +21,11 @@
 - [Auto Scaling 동적 조정 실습](docs/auto-scaling-practice.md)
 
 ## S3
-- Amazon S3 소개
-- Amazon S3 시작하기
-- Amazon S3 - 콘솔사용
-- Amazon S3 - AWS SDK 사용
+- [Amazon S3](docs/s3.md) 
 
 ## RDS
-- Amazon RDS 소개
-- Amazon RDS 시작하기
+- [Amazon RDS 소개](docs/rds_overview.md)
+- [Amazon RDS 시작하기](docs/rds_exercise.md)
 - 고가용성 (다중 AZ) 설정
 - Amazon RDS 백업 & 복원
 - Amazon RDS 확장 (Scaling)

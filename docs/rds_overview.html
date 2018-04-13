@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>rds_overview</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">1. Amazon RDS 소개</h2>
+
+<h3 id="toc_1">1.1 소개 동영상</h3>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yjH10T3Miag" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<ul>
+<li>여러분의 애플리케이션과 데이터베이스가 정교하게 튜닝된 기계처럼 함께 동작한다면 훌륭하지 않겠는가?
+
+<ul>
+<li>애플리케이션이 전면에서 고객을 즐겁게 해주고, 데이터베이스는 단지 무대 뒤에서 고객의 데이터를 내구성 있게 저장하고 항상 사용가능하게 해주면서 애플리케이션을 위해 훌륭한 성능을 제공해 준다.</li>
+<li>하지만 데이터베이스는 지속적으로 커지게 되며, 더 많은 것을 필요하게 된다.</li>
+</ul></li>
+<li>데이터베이스를 운영하는 것은 많은 반복적인 관리 작업을 의미한다. 이것은 반드시 수행해야 하는 작업이지만, 어떻게하면 데이터베이스의 병목현상이 발생하지 않게 미리 앞서 데이터베이스 용량을 증설할지, 어떻게하면 재난에 대비할 수 있을지에 대해 고객에게 직접 도움을 주지는 않는다.
+다행스럽게 힘든작업을 피하고 복잡도와 위험을 따라잡을 방법이 있다.</li>
+<li>아마존 관계형 데이터베이스 서비스, 즉 아마존 RDS는 클라우드 내의 관계형 데이터베이스를 쉽게 설정, 운영, 확장할 수 있는 관리 서비스이다.
+
+<ul>
+<li>여러분은 새로운 아마존 Aurora 엔진, MySQL, PostgreSQL, Oracle 데이터베이스, MS SQL 서버 중에 하나를 고를 수 있다.</li>
+<li>더욱이, AWS는 당신을 위해 지속적으로 이들을 패치해 주므로, 당신은 기존 도구와 애플리케이션을 계속해서 사용할수 있다.</li>
+</ul></li>
+<li>아마존 RDS는 하드웨어를 구매하여 설치할 필요가 없고, 소프트웨어를 설치할 필요도 없다. 단지, 클릭하여 진행하면, 여러분이 더 중요한 일을 하는 동안 새로운 데이터베이스가 사용가능하게 될 것이다.</li>
+<li>용량 계획에 스트레스를 받을 필요도 없다.
+
+<ul>
+<li>필요할 때 언제든지 더 많은 용량과 고성능을 얻을 수 있으므로, 데이터베이스를 확장하는 것은 매우 쉽다.</li>
+<li>또한 읽기전용 복제본을 추가함으로써, 데이터베이스를 수평적으로 확장(Scale out)할 수도 있다.</li>
+</ul></li>
+<li>데이터베이스의 높은 가용성을 부여하는 것도 매우 간단하다. 단지, 다중의 가용영역에서 실행하도록 선택하면 된다.
+
+<ul>
+<li>재난이 발생하면, RDS 는 예비 서버로 전환한다.</li>
+<li>버튼을 한번 누르기만 하면, 여러분의 데이터를 가까운 혹은 먼 다른 가용영역으로 복제할 수 있다.</li>
+</ul></li>
+<li>데이터베이스를 백업하고 복원하는 작업은 머리아픈일이다.
+
+<ul>
+<li>아마존 RDS는 이를 쉽게 해준다. 당신이 선택한 시점으로 복구하도록 해주는 자동화된 백업을 갖게 된다.</li>
+</ul></li>
+<li>또한, 필요시에 일관성 있고 내구성 있는 스냅샷을 갖고 원하는 기간동안 유지하는 쉬운 방법을 갖게 된다.</li>
+<li>아마존 RDS는 실험하는 것을 쉽고 싸게 해준다.
+
+<ul>
+<li>데이터베이스를 원하는 만큼 복제하고, 실험이 끝났을 때, 실험을 버리면 된다.</li>
+<li>당신이 사용한 리소스만 비용을 지불하면 된다.</li>
+</ul></li>
+<li>아마존 RDS는 클라우드 내의 관계형 데이터베이스를 쉽게 설정, 운영, 확장할 수 있는 쉬운 방법이다.</li>
+</ul>
+
+<hr>
+
+<h3 id="toc_2">1.2 Amazon RDS (Relational Database Service) 란?</h3>
+
+<ul>
+<li><p>클라우드에서 관계형 데이터베이스를 더욱 쉽게 설치, 운영 및 확장할 수 있는 웹 서비스</p></li>
+<li><p><strong>장점</strong></p>
+
+<ul>
+<li><strong>관리용이성</strong>
+
+<ul>
+<li>HW, SW 설치 없이 관리 콘솔, 명령줄 인터페이스, API 호출등의 방법으로 데이터베이스 관리</li>
+</ul></li>
+<li><strong>뛰어난 확장성</strong>
+
+<ul>
+<li>수직적 확장 (데이터베이스의 CPU 및 스토리지 확장)</li>
+<li>수평적 확장 (읽기 전용 복제본)</li>
+</ul></li>
+<li><strong>가용성 및 내구성</strong>
+
+<ul>
+<li>자동화 백업, 데이터베이스 스냅샷, 자동 호스팅 대체 등을 통해 가용성 및 내구성 향상</li>
+</ul></li>
+<li><strong>빠른 속도</strong>
+
+<ul>
+<li>온라인 트랜잭션 프로세싱 (OLTP)에 최적화된 스토리지 옵션 제공</li>
+</ul></li>
+<li><strong>보안</strong>
+
+<ul>
+<li>가상 네트워크 환경 (VPC)을 통해 데이터베이스 인스턴스를 외부와 격리하여 DB 인스턴스에 대한 네트워크 액세스 제어</li>
+</ul></li>
+<li><strong>저렴한 비용</strong>
+
+<ul>
+<li>사전 약정이 필요 없으며, 시작한 데이터베이스 인스턴스별로 월간 요금만 지불</li>
+<li>예약 인스턴스를 통해 보다 저렴한 요금제 사용</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h3 id="toc_3">1.3 Amazon RDS 구성요소</h3>
+
+<ul>
+<li><a href="#1.3.1">DB 인스턴스</a></li>
+<li><a href="#1.3.2">지역 및 가용영역</a></li>
+<li><a href="#1.3.3">보안그룹</a></li>
+<li><a href="#1.3.4">DB 파라미터 그룹</a></li>
+<li><a href="#1.3.5">DB 옵션 그룹</a></li>
+</ul>
+
+<p><a name="1.3.1"></a></p>
+
+<h4 id="toc_4">1.3.1 DB 인스턴스</h4>
+
+<ul>
+<li><strong>Amazon RDS의 기본 구성요소</strong>로서, 클라우드에 있는 격리된 데이터베이스 환경
+
+<ul>
+<li>사용자가 만든 여러 데이터베이스 포함</li>
+<li>기존 도구 및 애플리케이션 (예, 표준 SQL 클라이언트 애플리케이션)을 통해 DB 인스턴스에 접근 가능</li>
+</ul></li>
+<li>AWS 명령행 인터페이스 (CLI), Amazon RDS API, AWS Management Console을 사용해 DB 인스턴스를 만들고 수정할 수 있음.</li>
+<li>DB 엔진 실행 (MySQL, MariaDB, PostgreSQL, Oracle, MS SQL Server 엔진 지원)</li>
+<li>DB 인스턴스 클래스
+
+<ul>
+<li>DB 인스턴스의 CPU 및 메모리 용량 결정</li>
+</ul></li>
+<li>DB 인스턴스의 스토리지
+
+<ul>
+<li>5GB에서 6TB까지 용량 선택 가능</li>
+<li>마그네틱, 범용(SSD) 및 프로비저닝된 IOPS(SSD) 등 세 가지 유형</li>
+</ul></li>
+<li>Amazon의 Virtual Private Cloud(VPC) 서비스를 사용해 가상 사설 클라우드에서 DB 인스턴스를 실행 가능</li>
+</ul>
+
+<p><a name="1.3.2"></a></p>
+
+<h4 id="toc_5">1.3.2 지역 및 가용영역</h4>
+
+<ul>
+<li>Amazon 클라우드 컴퓨팅 리소스는 전 세계 여러 지역의 가용성이 높은 데이터 센터 시설에 하우징됨</li>
+<li>지역마다 가용 영역 또는 AZ라는 고유한 위치가 여러 개 포함됨
+
+<ul>
+<li>각 가용 영역은 다른 가용 영역의 오류로부터 격리</li>
+<li>같은 지역의 다른 가용 영역에 경제적이고 지연 시간이 낮은 네트워크 연결을 제공</li>
+</ul></li>
+<li>별도의 가용 영역에서 인스턴스를 시작함으로써 단일 위치에서 장애가 발생할 경우 애플리케이션을 보호</li>
+<li>여러 가용 영역에서 DB 인스턴스를 실행
+
+<ul>
+<li>다중 AZ 배포 옵션</li>
+<li>Amazon이 다른 가용 영역에서 DB 인스턴스의 동기식 예비 복제본을 자동으로 프로비저닝하고 유지</li>
+<li>기본 DB 인스턴스는 가용 영역에서 예비 복제본으로 동기식으로 복제되어 데이터 이중화, 장애 조치 지원을 제공하고 I/O 중지를 제거하고 시스템 백업 중에 지연 시간 스파이크를 최소화</li>
+</ul></li>
+</ul>
+
+<p><a name="1.3.3"></a></p>
+
+<h4 id="toc_6">1.3.3 보안</h4>
+
+<ul>
+<li><p>DB 인스턴스에 대한 액세스를 제어</p>
+
+<ul>
+<li>사용자가 지정한 IP 주소 범위 또는 Amazon EC2 인스턴스에서 액세스할 수 있도록 허용하는 방법으로 제어</li>
+</ul></li>
+<li><p>Amazon RDS는 <strong>DB 보안 그룹</strong>, <strong>VPC 보안 그룹</strong> 및 <strong>EC2 보안 그룹</strong>을 사용</p>
+
+<ul>
+<li><strong>DB 보안 그룹</strong>은 VPC 외부의 DB 인스턴스에 대한 액세스를 제어하고,</li>
+<li><strong>VPC 보안 그룹</strong>은 VPC 내부의 DB 인스턴스에 대한 액세스를 제어하고,</li>
+<li><strong>EC2 보안 그룹</strong>은 EC2 인스턴스에 대한 액세스를 제어하며, DB 인스턴스와 함께 사용</li>
+</ul>
+
+<p><img src="images/rds-security.png" alt=""></p></li>
+</ul>
+
+<p><a name="1.3.4"></a></p>
+
+<h4 id="toc_7">1.3.4 DB 파라미터 그룹/ DB 옵션 그룹</h4>
+
+<ul>
+<li><p><strong>DB 파라미터 그룹</strong></p>
+
+<ul>
+<li>DB 파라미터 그룹을 사용해 DB 엔진의 구성을 관리</li>
+<li>인스턴스 유형이 같은 하나 이상의 DB 인스턴스에 적용할 수 있는 엔진 구성 값을 포함</li>
+<li>DB 인스턴스를 만들 때 DB 파라미터 그룹을 지정하지 않으면 Amazon RDS가 기본 DB 파라미터 그룹을 적용</li>
+<li>기본 그룹에는 특정 데이터베이스 엔진 및 DB 인스턴스의 인스턴스 클래스에 대한 기본값이 포함</li>
+</ul></li>
+<li><p><strong>DB 옵션 그룹</strong></p>
+
+<ul>
+<li>일부 DB 엔진은 데이터베이스를 간편하게 관리하고 데이터를 적극 활용할 수 있는 추가 기능을 제공</li>
+<li>Amazon RDS는 DB 옵션 그룹을 사용하여 이러한 기능을 활성화 하고 구성</li>
+</ul></li>
+</ul>
+
+<p><a name="1.3.5"></a></p>
+
+<h4 id="toc_8">1.3.5 사용 가능한 RDS 인터페이스</h4>
+
+<ul>
+<li>Amazon RDS 콘솔
+
+<ul>
+<li>웹 기반 사용자 인터페이스 (<a href="https://console.aws.amazon.com/rds/">https://console.aws.amazon.com/rds/</a>)</li>
+</ul></li>
+<li>명령행 인터페이스
+
+<ul>
+<li>Amazon RDS API에서 사용할 수 있는 기능의 대다수에 액세스할 수 있는 권한을 제공하는 명령줄 인터페이스</li>
+</ul></li>
+<li>애플리케이션 프로그래밍 인터페이스 (API)
+
+<ul>
+<li>Query API</li>
+<li>SOAP API</li>
+<li>라이브러리
+
+<ul>
+<li>언어별로 고유한 API를 사용하여 애플리케이션을 빌드하는 것을 선호하는 소프트웨어 개발자를 위해 라이브러리, 샘플 코드, 자습서 및 기타 리소스를 제공</li>
+<li>Java</li>
+<li>PHP</li>
+<li>Python</li>
+<li>Ruby</li>
+<li>Windows 및 .NET</li>
+</ul></li>
+</ul></li>
+</ul>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
