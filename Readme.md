@@ -26,7 +26,7 @@
 ## RDS
 - [Amazon RDS 소개](docs/rds_overview.md)
 - [Amazon RDS 시작하기](docs/rds_exercise.md)
-- 고가용성 (다중 AZ) 설정
+- [고가용성 (다중 AZ) 설정](docs/rds_multiple_az.md)
 - Amazon RDS 백업 & 복원
 - Amazon RDS 확장 (Scaling)
 
