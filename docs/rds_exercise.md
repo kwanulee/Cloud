@@ -51,7 +51,7 @@
   - 업데이트 완료 후 yum install 명령을 사용하여 PHP 소프트웨어 패키지가 포함된 Apache 웹 서버를 설치
 
     ```
-    [ec2-user ~]$ [ec2-user ~]$ sudo yum install -y httpd24 php56 php56-mysqlnd     
+    [ec2-user ~]$ sudo yum install -y httpd24 php56 php56-mysqlnd     
     ```
 
   - 웹 서버를 시작
@@ -115,24 +115,23 @@
   2. AWS Management Console 상단 오른쪽 모서리에서 VPC 보안 그룹과 DB 인스턴스를 생성할 리전을 선택
   3. 탐색 창에서 Security Groups를 클릭
   4. Create Security Group을 클릭
-  5. [Create Security Group] 창에서 보안 그룹의 Name tag, Group name 및 Description을 입력합니다.
+  5. [Create Security Group] 창에서 보안 그룹의 Name 태그, 그룹 이름 및 설명을 입력합니다.
 
-    - [Name tag] : *tutorial-db-security-group*
-    - [Group name] : *tutorial-db-security-group*
-
-    - DB 인스턴스를 생성하려는 VPC를 선택합니다. 
-    - [Yes, Create]를 클릭
+    	- [Name 태그] : *tutorial-db-security-group*
+    	- [그룹 이름] : *tutorial-db-security-group*
+		- [설명]: *security group for tutorial db*
+    	- DB 인스턴스를 생성하려는 VPC를 선택합니다. 
+    	- [Yes, Create]를 클릭
 
 
   6. 콘솔 화면 하단 세부 정보 창에 보안 그룹 세부 정보를 비롯해 인바운드 및 아웃바운드 규칙 작업에 대한 탭이 표시됩니다. [Inbound Rules] 탭을 클릭.
   7. Inbound Rules 탭에서 [Edit]를 클릭
-    - [Custom TCP Rule]을 [Type] 목록에서 선택
-    - [PortRange] 텍스트 상자에 DB 인스턴스에 사용할 포트 값(3306)을 입력
-    - [Source] 텍스트 상자에 인스턴스에 액세스하는 위치의 IP 주소 범위(CIDR 값)를 입력하거나, 보안 그룹 이름을 선택 (DB인스턴스에 접속하는 애플리케이션의 EC2인스턴스의 보안그룹 이름 선택)
-
+    	- [Custom TCP Rule]을 [Type] 목록에서 선택
+    	- [PortRange] 텍스트 상자에 DB 인스턴스에 사용할 포트 값(3306)을 입력
+    	- [Source] 텍스트 상자에 인스턴스에 액세스하는 위치의 IP 주소 범위(CIDR 값)를 입력하거나, 보안 그룹 이름을 선택 (DB인스턴스에 접속하는 애플리케이션의 EC2인스턴스의 보안그룹 이름 선택)
     ![](images/VPC-security-group-create.png)
 
-    8. 모두 마쳤으면 [Save]를 클릭합니다
+	8. 모두 마쳤으면 [Save]를 클릭합니다
 
 ---
 <a name="1"></a>
@@ -140,57 +139,59 @@
 
 1. AWS Management Console에 로그인한 다음 https://console.aws.amazon.com/rds/ 에서 Amazon RDS 콘솔을 엽니다
 2. Amazon RDS 콘솔의 오른쪽 위 모서리에서 DB 인스턴스를 만들 리전을 선택
-3. 탐색 창에서 [Instances]를 선택
-4. [Launch DB Instance]를 선택합니다. [Select Engine] 페이지에 [Launch DB Instance Wizard]가 열립니다
-5. [Select Engine] 페이지에서 **MariaDB 아이콘**을 선택하고 MariaDB 엔진에 해당하는 [Select]를 선택
-6. [Production?] 페이지에서, 예제 인스턴스를 만들 것이므로 Dev/Test의 MariaDB를 선택합니다. 마쳤으면 [Next Step]를 선택
-7. [Specify DB Details] 페이지에서 DB 인스턴스 정보를 지정
-  - License Model: 기본값
-  - DB Engine Version: 사용하려는 MariaDB 버전을 선택
+3. 탐색 창에서 [인스턴스]를 선택
+4. [DB 인스턴스 시작]를 선택합니다. 
+5. [엔진 선택] 페이지에서 **MariaDB**를 선택하고 [다음 단계]를 클릭
+6. [사용 사례 선택] 페이지에서 *개발/테스트 - MarialDB* 선택하고 [다음 단계]를 클릭
+7. [DB 세부 정보 지정] 페이지에서 DB 인스턴스 정보를 지정
+  - 라이선스 모델: 기본값
+  - DB 엔진 버전: 사용하려는 MariaDB 버전을 선택
   - DB 인스턴스 클래스: [db.t2.micro] 선택
-  - 다중 AZ 배포: No 선택
+  - 다중 AZ 배포: *아니오* 선택
     - 장애 조치를 위해 다른 가용 영역에 DB 인스턴스의 예비 복제본을 생성하려면 Yes를 선택
-  - [Storage Type] : [Magnetic]을 선택
-  - Allocated Storage : 5GB 할당
-  - DB Instance Identifier : 선택한 리전의 계정에 대해 고유한 DB 인스턴스의 이름을 입력
-  - Master Username : 1-16자의 영숫자 문자를 사용해 DB 인스턴스에 로그온하기 위해 마스터 사용자 이름으로 사용할 이름을 입력
-  - [Master Password] 및 [Confirm Password]: 마스터 사용자 암호로 인쇄 가능한 ASCII 문자(/, " 및 @ 제외) 8-41자를 포함하는 암호를 입력
-
+  - 스토리지 유형 : *범용(SSD)*을 선택
+  - 할당된 스토리지 : 20GB 할당
+  - DB 인스턴스 식별자 : 선택한 리전의 계정에 대해 고유한 DB 인스턴스의 이름을 입력
+  		- 예, *tutorial-db-instance*	
+  - 마스터 사용자 이름 : 1-16자의 영숫자 문자를 사용해 DB 인스턴스에 로그온하기 위해 마스터 사용자 이름으로 사용할 이름을 입력
+  		- 예, *tutorial_user*
+  - [마스터 암호] 및 [암호 확인]: 마스터 사용자 암호로 인쇄 가능한 ASCII 문자(/, " 및 @ 제외) 8-41자를 포함하는 암호를 입력
+  		- 예, *master_password*
+  - [다음 단계] 클릭
+<!--
     ![](images/marialdb-instance-creation.png)
-
-8. [Configure Advanced Settings] 페이지에서 RDS에서 MariaDB DB 인스턴스를 시작하는 데 필요한 추가 정보를 입력
+-->
+8. [고급 설정 구성] 페이지에서 RDS에서 MariaDB DB 인스턴스를 시작하는 데 필요한 추가 정보를 입력
   - VPC : MariaDB DB 인스턴스를 호스팅할 Amazon VPC의 이름을 선택
-    - Default VPC 선택
-  - Publicly Accessible: VPC 외부에서 접근가능하게 할지 결정
-    - No 선택
-  - Availability Zone: 특정 가용 영역의 지정 여부를 결정
-    -No Preference 선택
+    	- *기본 VPC* 선택
+  - 퍼블릭 액세스 가능성: VPC 외부에서 접근가능하게 할지 결정
+    	- *아니오* 선택
+  - 가용 영역: 특정 가용 영역의 지정 여부를 결정
+    	- *기본 설정 없음* 선택
   - VPC 보안 그룹 : 이 DB 인스턴스에 사용할 VPC 보안 그룹을 선택
-    - 기존 보안 그룹(예: tutorial-db-security-group) 선택
+  		- 기존 보안 그룹(예: tutorial-db-security-group) 선택
 
-    <img src="images/marialdb-instance-creation2.png" width=300>
+    	<img src="images/marialdb-instance-creation2.png" width=300>
 
-  - Database Name : 기본 데이터베이스의 이름을 1~64자의 영숫자 문자로 입력 (*sample* 입력)
-  - Database Port: 포트 *3306*로 설정
+  - 데이터베이스 이름 : 기본 데이터베이스의 이름을 1~64자의 영숫자 문자로 입력 (*sample* 입력)
+  - 데이터베이스 포트: 포트 *3306*로 설정
   - DB 파라미터 그룹: 기본값 [default.mysql10.0]을 유지
   - Option Group: [default.mariadb-10-0]의 기본값을 수락
-  - [Copy Tags To Snapshots]: 스냅샷을 생성할 때 DB 인스턴스 태그를 DB 스냅샷에 복사하려면 이 옵션을 선택
-  - [Enable Encryption]: [No]를 선택
+  - [스냅샷으로 태그 복사]: 스냅샷을 생성할 때 DB 인스턴스 태그를 DB 스냅샷에 복사하려면 이 옵션을 체크
 
-    <img src="images/marialdb-instance-creation3.png" width=300>
+    	<img src="images/marialdb-instance-creation3.png" width=300>
 
-  - [Backup Retention Period]: 데이터베이스에서 자동 백업을 지속할 일수를 설정
-  - [Backup Window]: 데이터베이스를 백업할 특정 시간을 지정하지 않으려면 기본값으로 [No Preference]
-  - Enable Enhanced Monitoring: DB 인스턴스가 실행되는 운영 체제에 대한 실시간 수집 측정치를 활성화하지 않으려면 기본값인 [No]
-  - Auto Minor Version Upgrade:DB 엔진의 마이너 DB 엔진 버전 업그레이드가 제공되면 자동으로 이를 수신하도록 DB 인스턴스를 활성화하려면 [Yes]를 선택
-  - Maintenance Window: 대기 중인 DB 인스턴스의 설정 변경을 적용하려면 30분으로 선택합니다. 이 시간이 중요하지 않은 경우 [No Preference]를 선택
+  - [백업 보존 기간]: 데이터베이스에서 자동 백업을 지속할 일수를 설정
+  - [백입 기간]: 데이터베이스를 백업할 특정 시간을 지정하지 않으려면 기본값으로 [*기본 설정 없음*]
+  - 확장 모니터링: DB 인스턴스가 실행되는 운영 체제에 대한 실시간 수집 측정치를 활성화하지 않으려면 기본값인 [*확장 모니터링 사용 안함*]
+  - [마이너 버전 자동 업그레이드 사용]: DB 엔진의 마이너 DB 엔진 버전 업그레이드가 제공되면 자동으로 이를 수신하도록 DB 인스턴스를 활성화하려면 선택
+  - [유지 관리 기간]: 대기 중인 DB 인스턴스의 설정 변경을 적용하려면 30분으로 선택합니다. 이 시간이 중요하지 않은 경우 [*기본 설정 없음*]를 선택
 
-    <img src="images/marialdb-instance-creation4.png" width=300>
 
-9. Amazon RDS MySQL DB 인스턴스를 생성하려면 [Launch DB Instance]를 선택합니다
-10. 다음 페이지에서 [View Your DB Instances]를 선택하여 RDS MySQL DB 인스턴스를 확인
-11. RDS 콘솔의 DB 인터페이스 목록에 새 DB 인스턴스가 나타남
-  - DB 인스턴스를 만들고 사용할 준비가 될 때까지 DB 인스턴스의 상태는 creating 상태가 available로 변경되면 DB 인스턴스의 데이터베이스에 연결할 수 있음.
+9. [DB 인스턴스 시작]을 클릭
+10. 다음 페이지에서 [DB 인스턴스 세부 정보 보기]를 선택하여 RDS DB 인스턴스를 확인
+11. RDS 콘솔의 DB 인스턴스 목록에 새 DB 인스턴스가 나타남
+  - DB 인스턴스를 만들고 사용할 준비가 될 때까지 DB 인스턴스의 상태는 **생성 중** 상태가 **사용 가능**으로 변경되면 DB 인스턴스의 데이터베이스에 연결할 수 있음.
 
     ![](images/marialdb-instance-creation5.png)
 
@@ -233,10 +234,8 @@
   - https://github.com/kwanulee/AWSExample/blob/master/RDS-PHP/SamplePage.php
 
 5. SamplePage.php 파일을 저장하고 닫습니다
-6. 웹 서버를 열고 http://EC2 instance endpoint/SamplePage.php (  
-  - 예: http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage.php)를 검색하여 웹 서버에서 RDS MariaDB DB 인스턴스에 제대로 연결되는지 확인
-
-7. 연결 결과
+6. 웹 브라우저를 열고 http://**EC2\_instance\_endpoint**/SamplePage.php 입력하여 결과를 확인   
+  - 예: http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage.php 를 검색하여 웹 서버에서 RDS MariaDB DB 인스턴스에 제대로 연결되는지 확인
 
   ![](images/db-instance-php-result.png)
 
@@ -245,44 +244,44 @@
 ### 단계 3: MariaDB DB인스턴스의 데이터베이스에 연결
 - 표준 SQL 클라이언트 애플리케이션을 사용해 DB 인스턴스에 있는 데이터베이스에 연결할 수 있습니다.
 - mysql 명령줄 도구를 사용하여 DB 인스턴스의 데이터베이스에 연결하는 방법
-  1. MySQL이 설치된 EC2 인스턴스로 접속 혹은  MySQL 설치
+  	1. MySQL이 설치된 EC2 인스턴스로 접속 혹은  MySQL 설치
+   
+   		```
+   		[ec2-user ~]$ sudo yum install -y mysql56
+   		```
+  
+  	2. 터미널에서 다음 입력
+  
+    	```
+    	[ec2-user ~]$ mysql -h <endpoint> -P 3306 -u <mymasteruser> -p
+    	```
 
-    ```
-    [ec2-user ~]$ sudo yum install -y mysql56
-    ```
-
-  2. 터미널에서 다음 입력
-
-    ```
-    [ec2-user ~]$ mysql -h <endpoint> -P 3306 -u <mymasteruser> -p
-    ```
-
-    - <endpoint\>를  DB 인스턴스의 DNS 이름으로 대체 (port 번호 제외)
-    - <mymasteruser\> 를 마스터 사용자 이름으로 대체
+    	- \<endpoint\>를  DB 인스턴스의 DNS 이름으로 대체 (port 번호 제외)
+    	- \<mymasteruser\> 를 마스터 사용자 이름으로 대체
 
   3. 암호를 입력하라는 요청을 받으면 사용한 마스터 암호 입력
 
-    ```
-    [ec2-user~]$ mysql -h tutorial-db-instance.cwpfd82zeivm.ap-northeast-2.rds.amazonaws.com -P 3306 -u tutorial_user -p
-    Enter password:
-    ```
+    	```
+    	[ec2-user~]$ mysql -h tutorial-db-instance.cwpfd82zeivm.ap-northeast-2.rds.amazonaws.com -P 3306 -u tutorial_user -p
+    	Enter password:
+    	```
 
   4. 데이터베이스 확인
 
-    ```
-    mysql> show databases;
-    ```
+    	```
+    	mysql> show databases;
+    	```
   5. 데이터베이스 사용 선언
 
-    ```
-    mysql> use sample;
-    ```
+    	```
+    	mysql> use sample;
+    	```
 
   6. Select SQL문 사용
 
-    ```
-    mysql>select * from Employees;
-    ```
+    	```
+    	mysql>select * from Employees;
+    	```
 
 ---
 <a name="4"></a>
