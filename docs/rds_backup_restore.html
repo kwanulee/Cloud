@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>rds_backup_restore</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">4. 백업과 복원</h2>
+
+<h3 id="toc_1">4.1 자동 백업 작업</h3>
+
+<ul>
+<li><p>Amazon RDS는 사용자가 지정한 백업 보존 기간에 따라 DB 인스턴스의 자동 백업을 저장 </p>
+
+<ul>
+<li>DB 인스턴스를 선택하고, [<strong>인스턴스 작업</strong>]-[<strong>수정</strong>] 선택하여 설정 변경가능</li>
+</ul>
+
+<p><img src="images/rds_auto_backup_save.png" alt=""></p></li>
+<li><p>필요할 경우 백업 보존 기간 중 <strong>어느 특정 시점으로</strong>든 데이터베이스를 복구</p>
+
+<p><img src="images/rds_backup_restore.png" alt=""></p></li>
+<li><p><strong>백업 스토리지</strong></p>
+
+<ul>
+<li>각 리전의 Amazon RDS 백업 스토리지는 해당 리전의 <strong>자동 백업 및 수동 DB 스냅샷으로 구성</strong></li>
+<li>DB 인스턴스를 삭제하면 모든 자동 백업이 삭제</li>
+<li>DB 인스턴스를 삭제한 후에는 자동 백업을 복구할 수 없음 </li>
+<li>Amazon RDS가 DB 인스턴스를 삭제하기 전에 최종 DB 스냅샷을 생성하도록 선택한 경우 이 스냅샷을 사용하여 DB 인스턴스를 복구할 수 있음</li>
+<li>수동 스냅샷은 삭제되지 않음</li>
+</ul></li>
+<li><p><strong>백업 기간</strong></p>
+
+<ul>
+<li>자동 백업은 기본 백업 기간 동안 매일 실행</li>
+<li>백업 시간이 백업 기간에 할당된 시간보다 오래 걸릴 경우 백업은 백업 기간이 종료한 후에도 완료 시까지 계속 실행</li>
+<li>백업 기간은 해당 DB 인스턴스에 대한 <strong>주간 유지 보수 기간과 겹칠 수 없음</strong></li>
+<li>자동 백업 기간 중에 백업 프로세스가 시작될 때 스토리지 I/O가 일시적으로 중단가능
+
+<ul>
+<li>MariaDB, MySQL, Oracle 및 PostgreSQL의 경우, 다중 AZ 배포에 대한 백업 시 기본 AZ에서는 I/O 작업이 중단되지 않음. (백업이 예비 복제본으로부터 수행)</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3 id="toc_2">4.2 DB 스냅샷 생성</h3>
+
+<ul>
+<li><p>Amazon RDS는 개별 데이터베이스가 아닌 전체 DB 인스턴스를 백업하여 DB 인스턴스의 스토리지 볼륨 스냅샷을 생성</p>
+
+<ul>
+<li>단일 AZ DB 인스턴스에서 이 DB 스냅샷을 생성하면 잠시 I/O가 중단</li>
+<li>다중 AZ DB 인스턴스는 예비 인스턴스에서 백업이 이루어지기 때문에 이 I/O 중단 안됨</li>
+</ul></li>
+<li><p>DB 스냅샷을 생성하는 방법</p>
+
+<ol>
+<li>AWS Management Console에 로그인한 다음 <a href="https://console.aws.amazon.com/rds/%EC%97%90%EC%84%9C">https://console.aws.amazon.com/rds/에서</a> <strong>Amazon RDS 콘솔</strong>을 엽니다.</li>
+<li>탐색 창에서 <strong>인스턴스</strong>를 클릭합니다.</li>
+<li>DB 인스턴스를 선택하고,[<strong>인스턴스 작업</strong>]과 [<strong>스냅샷 만들기</strong>]을 차례대로 클릭합니다.</li>
+<li>[<strong>DB 스냅샷 생성</strong>] 창이 나타납니다.</li>
+<li>[<strong>스냅샷 이름</strong>] 텍스트 상자에 스냅샷 이름을 입력합니다.</li>
+</ol>
+
+<p><img src="images/rds_db_snapshot.png" alt=""></p></li>
+</ul>
+
+<h3 id="toc_3">4.3 DB 스냅샷에서 복원</h3>
+
+<ul>
+<li><p>DB 인스턴스를 복원하는 경우 복원 원본으로 사용할 DB 스냅샷의 이름을 입력하고 이 복원에서 생성되는 새 DB 인스턴스의 이름을 입력</p>
+
+<ul>
+<li>DB 스냅샷에서 기존 DB 인스턴스로 복원할 수는 없고, <strong>복원할 때 새 DB 인스턴스가 생성됨</strong></li>
+<li>DB 인스턴스를 복원할 경우 기본 DB 파라미터와 보안 그룹만 복원된 인스턴스와 연결됨</li>
+<li><strong>복원이 완료되는 즉시 복원의 원본 인스턴스에서 사용하는 사용자 지정 DB 파라미터 또는 보안 그룹을 연결</strong>해야 함</li>
+</ul></li>
+<li><p>DB 스냅샷에서 DB 인스턴스 복원 방법</p>
+
+<ol>
+<li>탐색 창에서 [<strong>스냅샷</strong>]를 선택합니다.</li>
+<li>복원 원본으로 사용할 DB 스냅샷을 선택합니다.</li>
+<li>[<strong>인스턴스 작업</strong>]과 [<strong>스냅샷 복원</strong>]을 선택합니다.</li>
+<li><p>[<strong>DB 인스턴스 식별자</strong>] 텍스트 상자에 복원된 DB 인스턴스의 이름을 입력후, [<strong>DB 인스턴스 복원</strong>] 선택</p>
+
+<p><img src="images/rds_db_snapshot_restore.png" alt=""></p>
+
+<ul>
+<li>스냅샷으로부터 복원되는 DB 인스턴스가 생성되는 데는 시간이 다소 걸림</li>
+</ul></li>
+<li><p>복원된 DB 인스턴스를 선택하고, [<strong>인스턴스 작업</strong>]-[<strong>수정</strong>] 선택</p>
+
+<p><img src="images/rds_db_snapshot_modify.png" alt=""></p></li>
+<li><p>[<strong>네트워크 및 보안</strong>]의 [<strong>보안 그룹</strong>]을 복원원본에서 사용한 보안그룹으로 설정</p>
+
+<p><img src="images/rds_db_snapshot_restore2.png" alt=""></p></li>
+<li><p>[<strong>계속</strong>] 클릭</p></li>
+<li><p>[<strong>DB 인스턴스 수정</strong>] 클릭</p></li>
+</ol></li>
+</ul>
+
+<h3 id="toc_4">4.4 스냅샷 복원 확인</h3>
+
+<ul>
+<li><p>EC2 인스턴스의 /var/www/inc 디렉토리에 있는 dbinfo.inc 파일 콘텐츠의 endpoint 값을   스냅샷으로부터 복원된 DB 인스턴트의 DNS 주소로 대체</p>
+
+<p><img src="images/rds_snapshot_resotre_result.png" alt=""></p></li>
+<li><p>웹 서버를 열고 http://EC2 instance endpoint/SamplePage.php (예: <a href="http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage.php">http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage.php</a>) 를 검색하여 웹 서버에서 RDS MariaDB DB 스냅샷 인스턴스에 제대로 연결되는지 확인</p>
+
+<p><img src="images/rds_snapshot_resotre_result2.png" alt=""></p></li>
+</ul>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>

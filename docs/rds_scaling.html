@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>rds_scaling</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h2 id="toc_0">5. 확장</h2>
+
+<h3 id="toc_1">5.1 Vertical Scaling (Scale Up)</h3>
+
+<ul>
+<li>Vertical Scaling (Scale Up)은 CPU, Memory 등 HW적인 사양을 높임으로써 시스템이 더 많은 요청을 더 빨리 수행할 수 있도록 확장하는 방안</li>
+<li><p><strong>RDS Scale Up 절차</strong></p>
+
+<ol>
+<li>AWS Management Console에 로그인한 다음 <a href="https://console.aws.amazon.com/rds/">https://console.aws.amazon.com/rds/</a> 에서 Amazon RDS 콘솔을 엽니다</li>
+<li>탐색 창에서 [<strong>인스턴스</strong>]를 선택</li>
+<li><p>DB 인스턴스를 선택하고, [<strong>인스턴스 작업</strong>]-[<strong>수정</strong>] 선택하여 <strong>인스턴스 사양</strong>의 필요한 설정 변경후에 <strong>계속</strong> 클릭</p>
+
+<p><img src="images/rds_instance_class_change.png" alt=""></p></li>
+<li><p>즉시 설정변경을 적용하고자 하는 경우에는 [<strong>즉시 적용</strong>] 체크 후, [<strong>DB 인스턴스 수정</strong>] 클릭</p>
+
+<ul>
+<li><strong>Multi-AZ Deployment가 Yes인 상태에서 Scale Up 하는 경우에는 다운타임없이, DB 인스턴스가 변경이 이루어짐</strong></li>
+</ul></li>
+</ol></li>
+</ul>
+
+<h3 id="toc_2">5.2 Horizontal Scaling (Scale Out)</h3>
+
+<ul>
+<li>데이터베이스 읽기 전용 복제본을 사용하여 데이터베이스를 확장하는 방안</li>
+<li>원본 DB 인스턴스에 적용된 변경사항은 읽기 전용 복제본 (Read Replica)에도 동시에 적용</li>
+<li><p>애플리케이션에서 읽기 전용 복제본으로 읽기 쿼리를 라우팅하여 원본 DB 인스턴스의 로드에 대한 부하를 줄임</p>
+
+<p><img src="http://d1nqddva888cns.cloudfront.net/rds_read_replicas.png" alt=""></p>
+
+<ul>
+<li>출처: <a href="https://aws.amazon.com/ko/blogs/aws/amazon-rds-announcing-read-replicas/">https://aws.amazon.com/ko/blogs/aws/amazon-rds-announcing-read-replicas/</a></li>
+</ul></li>
+</ul>
+
+<h3 id="toc_3">5.3 읽기 전용 복제본 만들기</h3>
+
+<ul>
+<li><p>절차</p>
+
+<ol>
+<li>기존 DB 인스턴스를 원본으로 지정</li>
+<li>Amazon RDS가 원본 인스턴스의 스냅샷을 캡처한 후 이 스냅샷을 이용해 읽기 전용 인스턴스를 생성</li>
+<li>원본 DB 인스턴스를 변경할 때마다 Amazon RDS가 DB 엔진에 <strong>비동기식 복제 방법을 사용하여 읽기 전용 복제본을 업데이트</strong></li>
+</ol></li>
+<li><p>Amazon RDS가 원본 DB 인스턴스의 DB 스냅샷을 캡처하는 동안 원본 인스턴스에 짧게 I/O 지연이 발생</p>
+
+<ul>
+<li>원본 DB 인스턴스가 다중 AZ 배포(다중 AZ 배포의 경우 DB 스냅샷이 예비 인스턴스에 생성됨)인 경우에는 발생하지 않음.</li>
+</ul></li>
+<li><p>읽기 전용 복제본이 DB 인스턴스의 역할을 하지만 <strong>읽기 전용 연결만 가능</strong></p></li>
+<li><p>애플리케이션을 읽기 전용 복제본에 연결하는 방법은 DB 인스턴스에 하는 것과 동일</p></li>
+<li><p>Amazon RDS는 <strong>원본 DB 인스턴스의 데이터베이스를 모두 복제</strong></p></li>
+<li><p>Amazon RDS는 <strong>원본 DB 인스턴스와 읽기 전용 복제본 사이에 안전한 통신 채널을 설정</strong></p>
+
+<ul>
+<li>MySQL DB 인스턴스는 원본 DB 인스턴스와 읽기 전용 복제본 사이에 퍼블릭 키 암호화를 사용</li>
+</ul></li>
+</ul>
+
+<h4 id="toc_4">5.3.1 읽기 전용 복제본 만들는 방법</h4>
+
+<ol>
+<li>AWS Management Console에 로그인한다음 <a href="https://console.aws.amazon.com/rds/">https://console.aws.amazon.com/rds/</a> 에서 Amazon RDS 콘솔을 엽니다.</li>
+<li>탐색 창에서 <strong>인스턴스</strong>를 클릭합니다.</li>
+<li>DB 인스턴스를 선택하고, [<strong>인스턴스 작업</strong>]-[<strong>읽기 전용 복제본 생성</strong>] 선택합니다.</li>
+<li><p><strong>설정</strong>의 [<strong>DB 인스턴스 식별자</strong>] 텍스트 상자에 읽기 전용 복제본의 이름(예, <em>tutorial-db-replica1</em>)을 입력합니다. 필요에 따라 다른 설정을 조정합니다.</p>
+
+<p><img src="images/rds_read_replica_id.png" alt=""></p></li>
+<li><p>원본 DB 인스턴스의 리전과 다른 곳인 경우에는 <strong>네트워크 및 보안</strong>의 [<strong>대상 리전</strong>] 상자에 읽기 전용 복제본의 리전을 지정합니다.</p></li>
+<li><p>읽기 전용 복제본을 VPC에 생성하고 싶은 경우에는 <strong>네트워크 및 보안</strong>의 [<strong>대상 DB 서브넷 그룹</strong>] 상자에 해당 VPC와 연동되어 있는 DB 서브넷 그룹을 지정합니다. </p>
+
+<ul>
+<li>반대로 읽기 전용 복제본을 VPC 외부에 생성하고 싶을 때는 해당 상자에서 <strong>없음</strong>을 선택합니다. </li>
+<li>VPC와 DB 서브넷 그룹은 대상 리전에 존재해야 합니다. 임의의 한 리전 내에서 동일한 원본 DB 인스턴스를 통해 생성된 읽기 전용 복제본은 다음 중 한 가지가 되어야 합니다.
+
+<ul>
+<li>모두 동일한 VPC에서 생성되어야 합니다.</li>
+<li>모두 VPC 외부에서 생성되어야 합니다.</li>
+</ul></li>
+</ul></li>
+<li><p>필요한 설정을 마친 후에, [<strong>읽기 전용 복제본 생성</strong>]을 클릭합니다.</p>
+
+<p><img src="images/rds_create_read_replica.png" alt=""></p></li>
+</ol>
+
+<!--    
+### 5.4 읽기 전용 복제본의 DB 인스턴스 승격
+- MySQL, MariaDB 또는 PostgreSQL 읽기 전용 복제본을 독립 실행형 DB 인스턴스로 승격할 수 있습니다.
+- 읽기 전용 복제본을 **독립 실행형 DB 인스턴스로 승격해야 하는 경우**
+    - **DDL 작업 실행(MySQL 및 MariaDB에 한함)**
+        - 인덱스를 생성하거나 리빌드하는 등의 DDL 작업은 시간이 걸릴 뿐만 아니라 DB 인스턴스에 상당한 성능 저하를 초래
+        - DDL 작업을 MySQL 읽기 전용 복제본에서 수행할 수 있음. 단 읽기 전용 복제본이 원본 DB 인스턴스와 동기화되어 있어야 함
+        - 그런 다음 읽기 전용 복제본을 승격해야 애플리케이션이 승격된 인스턴스를 사용하도록 유도할 수 있음.
+    - **샤딩 (Sharding)**
+        - 샤딩은 데이터베이스를 다수의 소규모 데이터베이스로 분할하는 기술
+        - 분할된 각 "샤드"(소규모 데이터베이스)마다 읽기 전용 복제본을 생성한 후 "독립된" 샤드로 전환하면서 승격
+    - **원본 DB 인스턴스에 장애가 발생할 경우 읽기 전용 복제본 승격을 데이터 복구 방법으로 사용할 수 있음.** 
+        - 하지만, 동기식 복제, 자동 장애 감지 및 장애 조치가 필요한 경우에는 DB 인스턴스를 다중 AZ 배포로 운영하는 것이 바람직함
+    - 비동기식 복제의 영향이나 한계에 대해 알고 있으면서도 데이터 복구를 위해 읽기 전용 복제본을 사용하려면 
+        1. 읽기 전용 복제본을 생성한 다음 원본 DB 인스턴스의 장애 여부를 모니터링
+        2. 장애 발견시, 읽기 전용 복제본을 승격
+        3. 데이터베이스 트래픽을 승격된 DB 인스턴스로 유도
+        4. 승격된 DB 인스턴스를 원본으로 하는 교체용 읽기 전용 복제본을 생성
+
+        ![](images/rds_read_replica_upgrade.png)
+
+- 승격 프로세스는 읽기 전용 복제본의 크기에 따라 완료하는 데 몇 분이 걸림
+- 읽기 전용 복제본이 단일 AZ DB 인스턴스로 승격되면 다른 단일 AZ DB 인스턴스와 다를 것이 없음
+    - 새롭게 승격된 DB 인스턴스를 다중 AZ DB 인스턴스로 전환 가능
+    - 새롭게 승격된 DB 인스턴스의 읽기 전용 복제본을 생성 가능
+    - DB 스냅샷을 캡처하여 특정 시점으로 복구 작업을 실행할 수도 있음
+- 읽기 전용 복제본이 승격되면, 더이상 기존 원보 DB 인스턴스의 복제를 수행하지 않음
+- 원본 DB 인스턴스에 읽기 전용 복제본이 다수 있을 경우 읽기 전용 복제본 하나를 DB 인스턴스로 승격하더라도 나머지 복제본에는 아무런 영향도 끼치지 않음
+
+#### 5.4.1 읽기 전용 복제본의 DB 인스턴스 승격 방법
+1. AWS Management Console에 로그인한 다음 https://console.aws.amazon.com/rds/ 에서 Amazon RDS 콘솔을 엽니다.
+2. Amazon RDS 콘솔에서 [**Instances**]를 클릭합니다.
+3. [**Instances**] 창에서 승격할 읽기 전용 복제본 를 마우스 오른쪽 버튼으로 클릭한 후 [**Promote Read Replica**]를 클릭합니다.
+4. [**Promote Read Replica**] 대화 상자에 새롭게 승격된 DB 인스턴스의 백업 보존 기간과 백업 기간을 입력합니다.
+5. 원하는 대로 설정되었으면 **Continue**를 클릭합니다.
+6. 승인 페이지에서 [**Yes, Promote**]를 클릭합니다.
+
+-->
+
+<h3 id="toc_5">5.4 실습 - 읽기 전용 복제본 사용</h3>
+
+<ul>
+<li><p>사전 준비</p>
+
+<ul>
+<li>실습: MariaDB DB 인스턴스 생성 및 웹서버 생성 완료</li>
+<li>RDS 읽기 전용 복제본 준비 (tutorial-db-replica1)</li>
+</ul></li>
+<li><p>/var/www/inc/dbinfo.inc 편집</p>
+
+<div><pre><code class="language-none">&lt;?php 
+define(&#39;DB_SERVER&#39;, ‘db_servier_endpoint&#39;); 
+define(&#39;DB_REPLICA&#39;, ‘db_replica_endpoint&#39;); 
+define(&#39;DB_USERNAME&#39;, &#39;tutorial_user&#39;);
+define(&#39;DB_PASSWORD&#39;, &#39;master_password&#39;); 
+define(&#39;DB_DATABASE&#39;, &#39;sample&#39;); 
+?&gt;</code></pre></div>
+
+<ul>
+<li><em>db_server_endpoint</em> 와 <em>db_replica_endpoint</em>는 생성된 DB 인스턴스 원본과 읽기전용 복제본의 엔드포인트(포트 없음)로 대체</li>
+</ul></li>
+<li><p>다음 링크의 콘덴츠를 /var/www/html/SamplePage2.php 에 저장
+<a href="https://github.com/kwanulee/AWSExample/blob/master/RDS-PHP/SamplePage2.php">https://github.com/kwanulee/AWSExample/blob/master/RDS-PHP/SamplePage2.php</a></p></li>
+<li><p>웹 서버를 열고 http://EC2 instance endpoint/SamplePage2.php (예: <a href="http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage2.php">http://ec2-52-79-51-167.ap-northeast-2.compute.amazonaws.com/SamplePage2.php</a>) 를 검색하여 웹 서버에서 RDS MariaDB DB 인스턴스에 제대로 연결되는지 확인</p></li>
+</ul>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
