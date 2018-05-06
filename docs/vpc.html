@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>vpc</title>
+
+
+<style type="text/css">
+*{margin:0;padding:0;}
+body {
+	font:13.34px helvetica,arial,freesans,clean,sans-serif;
+	color:black;
+	line-height:1.4em;
+	background-color: #F8F8F8;
+	padding: 0.7em;
+}
+p {
+	margin:1em 0;
+	line-height:1.5em;
+}
+table {
+	font-size:inherit;
+	font:100%;
+	margin:1em;
+}
+table th{border-bottom:1px solid #bbb;padding:.2em 1em;}
+table td{border-bottom:1px solid #ddd;padding:.2em 1em;}
+input[type=text],input[type=password],input[type=image],textarea{font:99% helvetica,arial,freesans,sans-serif;}
+select,option{padding:0 .25em;}
+optgroup{margin-top:.5em;}
+pre,code{font:12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;}
+pre {
+	margin:1em 0;
+	font-size:12px;
+	background-color:#eee;
+	border:1px solid #ddd;
+	padding:5px;
+	line-height:1.5em;
+	color:#444;
+	overflow:auto;
+	-webkit-box-shadow:rgba(0,0,0,0.07) 0 1px 2px inset;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;border-radius:3px;
+}
+pre code {
+	padding:0;
+	font-size:12px;
+	background-color:#eee;
+	border:none;
+}
+code {
+	font-size:12px;
+	background-color:#f8f8ff;
+	color:#444;
+	padding:0 .2em;
+	border:1px solid #dedede;
+}
+img{border:0;max-width:100%;}
+abbr{border-bottom:none;}
+a{color:#4183c4;text-decoration:none;}
+a:hover{text-decoration:underline;}
+a code,a:link code,a:visited code{color:#4183c4;}
+h2,h3{margin:1em 0;}
+h1,h2,h3,h4,h5,h6{border:0;}
+h1{font-size:170%;border-top:4px solid #aaa;padding-top:.5em;margin-top:1.5em;}
+h1:first-child{margin-top:0;padding-top:.25em;border-top:none;}
+h2{font-size:150%;margin-top:1.5em;border-top:4px solid #e0e0e0;padding-top:.5em;}
+h3{margin-top:1em;}
+hr{border:1px solid #ddd;}
+ul{margin:1em 0 1em 2em;}
+ol{margin:1em 0 1em 2em;}
+ul li,ol li{margin-top:.5em;margin-bottom:.5em;}
+ul ul,ul ol,ol ol,ol ul{margin-top:0;margin-bottom:0;}
+blockquote{margin:1em 0;border-left:5px solid #ddd;padding-left:.6em;color:#555;}
+dt{font-weight:bold;margin-left:1em;}
+dd{margin-left:2em;margin-bottom:1em;}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+kbd {
+  display: inline-block;padding: 3px 5px;font-size: 11px;line-height: 10px;color: #555;vertical-align: middle;background-color: #fcfcfc;border: solid 1px #ccc;border-bottom-color: #bbb;border-radius: 3px;box-shadow: inset 0 -1px 0 #bbb;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style>
+div.polaroid {
+    width: 400px;
+    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2), 0 16px 30px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    margin-bottom: 0.5cm;
+}
+</style>
+
+<h1 id="toc_0">Amazon VPC</h1>
+
+<ul>
+<li>Amazon VPC 소개</li>
+<li>Amazon VPC 시작하기</li>
+<li>Amazon VPC 주요 개념</li>
+</ul>
+
+<hr>
+
+<h2 id="toc_1">1. Amazon VPC 소개</h2>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hMvpnK0gJPc" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<p><a href="https://youtu.be/hMvpnK0gJPc">https://youtu.be/hMvpnK0gJPc</a></p>
+
+<h3 id="toc_2">1.1 VPC (Virtual Private Cloud) 란?</h3>
+
+<ul>
+<li><p>Amazon Web Services(AWS) 리소스를 시작시킬 수 있는 <strong>정의된 가상 네트워크</strong></p>
+
+<ul>
+<li>고객의 자체 데이터 센터에서 운영하는 기존 네트워크 매우 유사하나, AWS의 확장 가능한 인프라를 사용한다는 이점이 있음.</li>
+<li>AWS 클라우드 내의 다른 가상 네트워크와 논리적으로 분리되어 있음</li>
+<li><strong>VPC</strong>는 다수의 <strong>서브넷</strong>으로 구성 
+
+<ul>
+<li><strong>Public subnet</strong>: 외부 접속이 가능</li>
+<li><strong>Private subnet</strong>: 외부접속이 불가능</li>
+</ul></li>
+<li>서브넷 사이의 통신은 <strong>라우팅 테이블(Route Table)</strong>을 이용</li>
+<li>인터넷을 통한 외부접속은 <strong>인터넷 게이트웨이(internet gateway)</strong>로 트래픽을 라우팅</li>
+<li>세분화된 접근 제어 가능</li>
+<li>기존 데이터센터와의 연결을 통해 AWS를 회사 인프라의 일부처럼 사용</li>
+</ul>
+
+<div class="polaroid">
+    <img src="images/vpc_overview.png">
+</div></li>
+</ul>
+
+<h3 id="toc_3">1.2 기본 VPC vs. 사용자 VPC</h3>
+
+<ul>
+<li>기본 VPC
+
+<ul>
+<li>2013년 12월 4일 이후에 AWS 계정을 만든 경우에는 각 AWS 리전마다 기본 VPC 제공</li>
+<li>기본 VPC는 바로 사용할 수 있으므로 별도의 구성 단계 없이 즉시 인스턴스를 기본 VPC에서 시작할 수 있음.</li>
+</ul></li>
+<li>사용자 정의 VPC
+
+<ul>
+<li>보안이 강화된, 개인화된 가상 네트워크 구성 목적</li>
+<li>서브넷 구성, IP 주소 범위 선택, 라우팅 테이블 구성, 네트워크 게이트웨이 및 보안 설정</li>
+</ul></li>
+</ul>
+
+<h2 id="toc_4">2. Amazon VPC 시작하기</h2>
+
+<ul>
+<li>다음 <a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/getting-started-ipv4.html">링크</a>를 클릭하여 Amazon VPC 생성을 연습합니다.</li>
+</ul>
+
+<h2 id="toc_5">3. Amzaon VPC 주요 개념</h2>
+
+<ul>
+<li><a href="#vpc">VPC</a></li>
+<li><a href="#subnet">VPC subnet</a></li>
+<li><a href="#gateway">Internet Gateway</a></li>
+<li><a href="#route_table">Route Table</a></li>
+<li><a href="#sg">Security Group</a></li>
+<li><a href="#acl">Network ACLs</a></li>
+</ul>
+
+<p><a name="vpc"> </a> </p>
+
+<h3 id="toc_6">3.1 VPC</h3>
+
+<ul>
+<li>Virtual Private Cloud(VPC)는 사용자의 AWS 계정 전용 가상 네트워크</li>
+<li>VPC는 AWS 클라우드에서 다른 가상 네트워크와 논리적으로 분리되어 있습니다. </li>
+<li>Amazon EC2 인스턴스와 같은 AWS 리소스를 VPC에서 실행할 수 있습니다.</li>
+<li><p>VPC를 만들 때 VPC의 IPv4 주소의 범위를 <strong>CIDR(Classless Inter-Domain Routing)</strong> 블록 형태로 지정해야 합니다(예: 10.0.0.0/16). </p>
+
+<ul>
+<li><p>[참고] CIDR 블럭</p>
+
+<ul>
+<li><strong>사이더 블록</strong>이라 불리는 그룹에 포함된 여러 IP 주소는 이진 표기를 하였을 때 동일한 일련의 초기 비트를 가진다.</li>
+</ul>
+
+<div class="polaroid">
+    <img src="images/cidr.png">
+</div></li>
+</ul></li>
+<li><p>VPC를 만들면 리전의 모든 가용 영역에 적용됩니다.</p>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/images/vpc-diagram.png" alt=""></p></li>
+</ul>
+
+<h4 id="toc_7">3.1.1 VPC 만들기 (실습)</h4>
+
+<ul>
+<li><a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/working-with-vpcs.html#Create-VPC">https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/working-with-vpcs.html#Create-VPC</a></li>
+<li>결과
+<img src="images/vpc-create-result.png" alt=""></li>
+</ul>
+
+<p><a name="subnet"> </a> </p>
+
+<h3 id="toc_8">3.2 VPC subnet</h3>
+
+<ul>
+<li><p>VPC를 만든 후 각 가용 영역에 하나 이상의 서브넷을 추가할 수 있습니다. </p>
+
+<ul>
+<li><p>서브넷이란?</p>
+
+<ul>
+<li><p>서브넷이란 하나의 IP 네트워크 주소를 지역적으로 나누어 이 하나의 네트워크 IP 주소가 실제로 여러개의 서로 연결된 지역 네트워크로 사용할 수 있도록 하는 방법이다</p>
+
+<p>출처: <a href="http://pos7.tistory.com/entry/%EC%84%9C%EB%B8%8C%EB%84%B7%EC%9D%B4%EB%9E%80-SUBNET">http://pos7.tistory.com/entry/서브넷이란-SUBNET</a> </p></li>
+</ul></li>
+</ul></li>
+<li><p>서브넷을 만들 때 해당 서브넷에 대한 CIDR 블록을 지정합니다. </p></li>
+<li><p><strong>각 서브넷은 단일 가용 영역 내에서만 존재</strong>해야 하며, 여러 영역으로 확장할 수 없습니다. </p>
+
+<ul>
+<li>각 가용 영역은 다른 가용 영역에서 발생한 장애를 격리시킬 수 있도록 서로 분리된 공간입니다. </li>
+<li>별도의 가용 영역에서 인스턴스를 시작함으로써 단일 위치에서 장애가 발생할 경우 애플리케이션을 보호할 수 있습니다. </li>
+<li>AWS는 각 서브넷에 고유 ID를 할당합니다. </li>
+</ul></li>
+<li><p>서브넷 유형</p>
+
+<ul>
+<li><strong>퍼블릭 서브넷 (Public Subnet)</strong>: 서브넷 트래픽이 인터넷 게이트웨이로 라우팅</li>
+<li><strong>프라이빗 서브넷 (Private Subnet)</strong>: 인터넷 게이트웨이로 라우팅 되지 않는 서브넷</li>
+<li><strong>VPN 전용 서브넷</strong>: 서브넷이 인터넷 게이트웨이에 이르는 경로를 갖고 있지 않지만 그 트래픽이 VPN 연결을 위한 가상 프라이빗 게이트웨이로 라우팅</li>
+</ul>
+
+<p><img src="https://cdn-images-1.medium.com/max/1600/1*uosoBS9UDysCwODp9lRW8Q.png" alt=""></p></li>
+</ul>
+
+<h4 id="toc_9">3.2.1 VPC에서 서브넷 만들기 (실습)</h4>
+
+<ul>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/working-with-vpcs.html#AddaSubnet">https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/working-with-vpcs.html#AddaSubnet</a></p></li>
+<li><p>결과
+<img src="images/subnet-create-result.png" alt=""></p></li>
+</ul>
+
+<h3 id="toc_10">3.3     VPC 서브넷의 인스턴스에 대한 인터넷 액세스 활성화</h3>
+
+<ul>
+<li><p>VPC 서브넷의 인스턴스에 대한 인터넷 액세스를 활성화하려면,
+<strong>VPC에 인터넷 게이트웨이를 연결</strong>합니다.</p>
+
+<ul>
+<li><strong>서브넷의 라우팅 테이블이 인터넷 게이트웨이를 가리키는지 확인</strong>합니다.</li>
+<li>서브넷의 인스턴스에 <strong>전역적으로 고유한 IP 주소(퍼블릭 IPv4 주소, 탄력적 IP 주소 또는 IPv6 주소)가 있는지 확인</strong>합니다.</li>
+<li>네트워크 액세스 제어 및 보안 그룹 규칙에서 적절한 <strong>트래픽이 인스턴스로, 그리고 인스턴스에서 흐르도록 허용되는지 확인</strong>합니다.</li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/images/internet-gateway-overview-diagram.png" alt=""></p></li>
+</ul>
+
+<p><a name="gateway"> </a>     </p>
+
+<h4 id="toc_11">3.3.1 인터넷 게이트웨이</h4>
+
+<ul>
+<li><strong>인터넷 게이트웨이</strong>는 수평 확장되고 가용성이 높은 중복 VPC 구성 요소로, <strong>VPC의 인스턴스와 인터넷 간에 통신할 수 있게 해줍니다.</strong> </li>
+<li><strong>VPC당 하나의 인터넷 게이트웨어 설정</strong></li>
+<li><p><strong>인터넷 게이트웨이 생성 및 연결 (실습)</strong></p>
+
+<ul>
+<li><p><a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html#Add_IGW_Attach_Gateway">https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html#Add_IGW_Attach_Gateway</a> </p></li>
+<li><p>결과
+<img src="images/gateway-create-result.png" alt=""></p></li>
+</ul></li>
+</ul>
+
+<p><a name="route_table"> </a> </p>
+
+<h4 id="toc_12">3.3.2 라우팅 테이블</h4>
+
+<ul>
+<li><strong>라우팅 테이블</strong>에는 <strong>네트워크 트래픽을 전달할 위치를 결정하는 데 사용되는 라우팅이라는 규칙 집합이 포함</strong>됨.</li>
+<li><p><strong>VPC의 각 서브넷을 라우팅 테이블에 연결</strong>해야 합니다. </p>
+
+<ul>
+<li>테이블에서는 서브넷에 대한 라우팅을 제어합니다. </li>
+<li>서브넷을 한 번에 하나의 라우팅 테이블에만 연결할 수 있지만, 여러 서브넷을 동일한 라우팅 테이블에 연결할 수 있습니다.</li>
+</ul>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/images/custom-route-table-diagram.png" alt=""></p></li>
+</ul>
+
+<h5 id="toc_13">3.3.2.1 기본/사용자지정 라우팅 테이블</h5>
+
+<ul>
+<li><strong>VPC를 생성하면 수정할 수 있는 기본 라우팅 테이블이 함께 자동으로 제공</strong>됩니다.</li>
+<li><p>VPC에 <strong>사용자 지정 라우팅 테이블을 추가로 만들 수 있습니다.</strong></p>
+
+<ul>
+<li>Amazon VPC 콘솔의 [<strong>라우팅 테이블</strong>] 페이지의 [<strong>기본(Main)</strong>] 열에서 [<strong>예</strong>]를 찾아 VPC에 대한 기본 라우팅 테이블을 확인할 수 있음</li>
+</ul></li>
+</ul>
+
+<h5 id="toc_14">3.3.2.2 라우팅 테이블 연결</h5>
+
+<ul>
+<li><p><strong>서브넷에 대한 라우팅을 제어하는 라우팅 테이블에 각 서브넷을 암시적 또는 명시적 연결</strong>해야 합니다. </p>
+
+<ul>
+<li>서브넷을 특정 라우팅 테이블에 명시적으로 연결하지 않을 경우 서브넷은 기본 라우팅 테이블에 <strong>암시적으로 연결</strong>됩니다.</li>
+<li>VPC 콘솔은 각 라우팅 테이블에 명시적으로 연결된 서브넷의 수를 보여준다.
+
+<ul>
+<li>자세한 내용은 <a href="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html#Route_Which_Associations">테이블과 명시적으로 연결되어 있는 서브넷 확인</a> 참조</li>
+</ul></li>
+</ul></li>
+<li><p><strong>기본 라우팅 테이블은 삭제할 수 없지만, 기본 라우팅 테이블을 사용자가 만든 사용자 지정 테이블로 바꿀 수 있습니다.</strong></p></li>
+<li><p><strong>VPC를 보호하는 한 가지 방법</strong> </p>
+
+<ul>
+<li>기본 라우팅 테이블을 (로컬 경로만 있는) 원래의 기본 상태로 두고, 사용자가 새로 생성하는 각 서브넷을 자신이 생성한 사용자 지정 라우팅 테이블 중 하나와 명시적으로 연결하는 것
+
+<ul>
+<li>새 서브넷을 생성하면 서브넷이 트래픽을 가상 프라이빗 게이트웨이로 라우팅하는 기본 라우팅 테이블과 자동으로 연결</li>
+<li>반대로 구성을 설정하면 새 서브넷은 인터넷 게이트웨에 대한 라우팅을 갖게됨</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h5 id="toc_15">3.3.2.3 사용자 지정 라우팅 테이블 생성 (실습)</h5>
+
+<ol>
+<li><a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a> 에서 Amazon    VPC 콘솔을 엽니다. </li>
+<li>탐색 창에서 [<strong>라우팅 테이블</strong>]를 선택합니다. </li>
+<li>[<strong>라우팅 테이블 생성</strong>]을 선택합니다. </li>
+<li>[<strong>라우팅 테이블 생성</strong>] 대화 상자에서 [Name tag]에 라우  팅 테이블 이름을 선택적으로 지정할 수 있습니다. 
+
+<ul>
+<li>이름을 지정하면 Name 키와 사용자가 지정하는 값을 가진 태그가 생성됩니다. </li>
+<li>[<strong>VPC</strong>]에 대해 VPC를 선택한 후 [<strong>예, 생성</strong>]를 선택합니다. 
+<img src="images/create-route-table.png" alt=""></li>
+</ul></li>
+</ol>
+
+<h5 id="toc_16">3.3.2.4 라우팅 테이블에 인터넷 게이트웨이 경로 추가 (실습)</h5>
+
+<ol>
+<li><a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a> 에서 Amazon    VPC 콘솔을 엽니다. </li>
+<li>탐색 창에서 [<strong>라우팅 테이블</strong>]를 클릭한 후, 경로를 추가할 라우팅 테이블을 선택합니다. </li>
+<li>[<strong>라우팅</strong>]탭에서 [<strong>편집</strong>]을 클릭 합니다. </li>
+<li>[<strong>다른 라우팅 추가</strong>]를 클릭합니다.</li>
+<li>[<strong>대상 주소</strong>]에 0.0.0.0/0 입력, [<strong>대상</strong>]에 인터넷 게이트웨어 선택 </li>
+<li><p>[<strong>저장</strong>]를 선택합니다. </p></li>
+</ol>
+
+<ul>
+<li>결과
+<img src="images/add-igw-to-rt.png" alt=""></li>
+</ul>
+
+<h5 id="toc_17">3.3.2.5 공용 서브넷에 사용자 지정 라우팅 테이블을 연결 (실습)</h5>
+
+<ol>
+<li><a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a> 에서 Amazon    VPC 콘솔을 엽니다. </li>
+<li>탐색 창에서 [<strong>라우팅 테이블</strong>]를 클릭한 후, 경로를 추가할 라우팅 테이블을 선택합니다. </li>
+<li>[<strong>서브넷 연결</strong>] 탭에서 [<strong>수정</strong>]을 클릭 합니다. </li>
+<li><p>라우팅 테이블과 연결할 서브넷에 대한 [<strong>연결</strong>] 확인란을 선택한 후 [<strong>저장</strong>]를 클릭합니다. </p>
+
+<p><img src="images/connect-rt-to-subnet.png" alt=""></p></li>
+</ol>
+
+<ul>
+<li><p>결과</p>
+
+<p><img src="images/connect-rt-to-subnet-result.png" alt=""></p></li>
+</ul>
+
+<p><a name="sg"> </a> </p>
+
+<h3 id="toc_18">3.3.3 보안 그룹</h3>
+
+<ul>
+<li>보안 그룹은 인스턴스에 대한 인바운드 및 아웃바운드 트래픽을 제어하는 가상 방화벽 역할을 합니다.</li>
+<li>VPC에서 인스턴스를 시작할 때 최대 5개의 보안 그룹에 인스턴스를 할당할 수 있습니다</li>
+<li>보안 그룹은 서브넷 수준이 아니라 <strong>인스턴스 수준</strong>에서 작동하므로 VPC에 있는 서브넷의 각 인스턴스를 서로 다른 보안 그룹 세트에 할당할 수 있습니다</li>
+<li>시작할 때 특정 그룹을 지정하지 않으면 인스턴스가 자동으로 VPC의 기본 보안 그룹에 할당됩니다. </li>
+<li>각 보안 그룹에 대해 인스턴스에 대한 인바운드 트래픽을 제어하는 규칙과 아웃바운드 트래픽을 제어하는 별도의 규칙 세트를 추가합니다</li>
+</ul>
+
+<h4 id="toc_19">3.3.3.1 보안 그룹 기본 사항</h4>
+
+<ul>
+<li>허용 규칙을 지정할 수 있지만 거부 규칙은 지정할 수 없습니다.</li>
+<li>보안 그룹을 만드는 경우에는 인바운드 규칙이 없습니다. 
+
+<ul>
+<li>보안 그룹에 인바운드 규칙을 추가하기 전에는 인바운드 트래픽이 허용되지 않습니다.</li>
+</ul></li>
+<li>기본적으로 보안 그룹은 모든 아웃바운드 트래픽을 허용하는 아웃바운드 규칙을 포함합니다. 
+
+<ul>
+<li>규칙을 제거할 수 있으며 특정 아웃바운드 트래픽만 허용하는 아웃바운드 규칙을 추가할 수 있습니다. </li>
+<li>보안 그룹에 아웃바운드 규칙이 없는 경우 아웃바운드 트래픽이 허용되지 않습니다. </li>
+</ul></li>
+<li>보안 그룹은 상태가 저장됩니다. 
+
+<ul>
+<li>사용자가 인스턴스에서 요청을 전송하면 해당 요청의 응답 트래픽은 인바운드 보안 그룹 규칙에 관계없이 인바운드 흐름이 허용됩니다. </li>
+<li>아웃바운드 규칙에 상관없이, 허용된 인바운드 트래픽에 대한 반응으로 외부로 나가는 흐름이 수행됩니다. </li>
+</ul></li>
+</ul>
+
+<h4 id="toc_20">3.3.3.2 보안 그룹 생성 (실습)</h4>
+
+<ul>
+<li><p>웹 서버는 퍼블릭 서브넷에 두고 데이터베이스 서버는 프라이빗 서브넷에 두는 다중 계층 웹 사이트가 있습니다. 웹 서버가 데이터베이스 서버와 통신할 수 있도록 보안 그룹을 설정합니다.</p></li>
+<li><p>WebServerSG</p>
+
+<ul>
+<li>인바운드 규칙
+
+<ul>
+<li>어떤 IPv4 주소에서든 웹 서버로의 인바운드 HTTP 액세스 허용</li>
+<li>어떤 IPv4 주소에서든 Linux 인스턴스로의 인바운드 SSH 액세스 허용</li>
+</ul></li>
+</ul></li>
+<li><p>DBServerSG</p>
+
+<ul>
+<li>인바운드 규칙
+
+<ul>
+<li>WebServerSG 보안 그룹과 연결된 웹 서버에서 인바운드 MySQL Server 액세스가 가능하도록 허용</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<hr>
+
+<ol>
+<li><p>WebServerSG 및 DBServerSG 보안 그룹 생성</p>
+
+<ol>
+<li><a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a> 에서 Amazon VPC 콘솔을 엽니다.</li>
+<li>탐색 창에서 [Security Groups]와 [Create Security Group]을 차례로 선택합니다.</li>
+<li>보안 그룹 이름으로 WebServerSG를 지정하고 설명을 제공합니다. [VPC]에 대해 생성한 VPC의 ID를 선택하고 [Yes, Create]를 선택합니다.</li>
+<li>[Create Security Group]을 다시 선택합니다.</li>
+<li>보안 그룹 이름으로 DBServerSG를 지정하고 설명을 제공합니다. [VPC]에 대해 VPC의 ID를 선택한 다음 [Yes, Create]를 선택합니다.</li>
+</ol></li>
+<li><p>WebServerSG 보안 그룹에 규칙을 추가</p>
+
+<ol>
+<li>앞에서 만든 WebServerSG 보안 그룹을 선택합니다. </li>
+<li>[Inbound Rules] 탭에서 [Edit]를 선택한 후, 다음과 같이 인바운드 트래픽에 대한 규칙들을 추가합니다.
+
+<ul>
+<li>[Type], [HTTP]를 선택합니다. [Source]에 0.0.0.0/0을 입력합니다.</li>
+<li>[Add another rule], [Type], [SSH]를 선택합니다.  [Source]에 0.0.0.0/0을 입력합니다.</li>
+<li>[Save]를 선택합니다</li>
+</ul></li>
+</ol></li>
+<li><p>DBServerSG 보안 그룹에 규칙을 추가</p>
+
+<ol>
+<li>앞에서 만든 DBServerSG 보안 그룹을 선택합니다. </li>
+<li>[Inbound Rules] 탭에서 [Edit]를 선택한 후, 다음과 같이 인바운드 트래픽에 대한 규칙들을 추가합니다.
+
+<ul>
+<li>[Type], [MS SQL]을 선택합니다. [Source]에 WebServerSG 보안 그룹의 ID를 지정합니다.</li>
+<li>[Save]를 선택합니다.</li>
+</ul></li>
+</ol></li>
+</ol>
+
+<p><a name="acl"> </a> </p>
+
+<h3 id="toc_21">3.3.4 네트워크 ACL</h3>
+
+<ul>
+<li>네트워크 ACL(액세스 제어 목록)은 1개 이상의 서브넷 내부와 외부의 트래픽을 제어하기 위한 방화벽 역할을 하는 VPC를 위한 선택적 보안 </li>
+<li>연결된 서브넷에 대해 방화벽 역할을 하여 <strong>서브넷 수준</strong>에서 <strong>인바운드 트래픽과 아웃바운드 트래픽을 모두 제어</strong></li>
+<li><p>보안 그룹과 비슷한 규칙으로 네트워크 ACL을 설정하여 VPC에 보안 계층을 더 추가할 수 있습니다.</p>
+
+<p><img src="https://docs.aws.amazon.com/ko_kr/AmazonVPC/latest/UserGuide/images/security-diagram.png" alt=""></p></li>
+</ul>
+
+<h4 id="toc_22">3.3.4.1 네트워크 ACL 기본 사항</h4>
+
+<ul>
+<li>VPC는 수정 가능한 기본 네트워크 ACL과 함께 자동으로 제공
+
+<ul>
+<li>기본적으로 모든 인바운드 및 아웃바운드 IPv4 트래픽을 허용</li>
+</ul></li>
+<li>사용자 지정 네트워크 ACL을 생성하여 서브넷과 연결할 수 있습니다. 
+
+<ul>
+<li>기본적으로 각 사용자 지정 네트워크 ACL은 규칙을 추가하기 전에는 모든 인바운드 및 아웃바운드 트래픽을 거부</li>
+</ul></li>
+<li>VPC에 있는 각 서브넷을 네트워크 ACL과 연결해야 합니다. 
+
+<ul>
+<li>서브넷을 네트워크 ACL에 명시적으로 연결하지 않을 경우, 서브넷은 기본 네트워크 ACL에 자동적으로 연결됩니다.</li>
+<li>한 네트워크 ACL을 여러 서브넷과 연결할 수 있습니다. 하지만 한 서브넷은 한 번에 한 네트워크 ACL과만 연결할 수 있습니다.</li>
+</ul></li>
+<li>네트워크 ACL은 번호가 매겨진 규칙 목록을 포함하고 있는데, 가장 낮은 번호를 매긴 규칙부터 시작해 이 규칙들을 평가함으로써 네트워크 ACL과 연결된 모든 서브넷의 내부 또는 외부로 트래픽이 허용되는지 확인할 수 있습니다</li>
+<li>네트워크 ACL에는 별개의 인바운드 및 아웃바운드 규칙이 있으며, 각 규칙은 트래픽을 허용하거나 거부할 수 있습니다.</li>
+<li>네트워크 ACL은 상태 비저장입니다. 즉, 허용되는 인바운드 트래픽에 대한 응답은 아웃바운드 트래픽에 대한 규칙을 따르고, 그 반대의 경우에도 마찬가지입니다.</li>
+</ul>
+
+<h4 id="toc_23">3.3.4.2 기본 네트워크 ACL</h4>
+
+<ul>
+<li>기본 네트워크 ACL은 연결된 서브넷을 드나드는 트래픽 흐름을 모두 허용하도록 구성</li>
+<li><p>별표로 되어 있는 규칙은 패킷이 번호가 매겨진 다른 어떤 규칙과도 일치하지 않을 경우에는 거부되도록 되어 있습니다. </p>
+
+<ul>
+<li>이 규칙을 수정하거나 제거할 수 없습니다.
+<!--
+![](images/main_acl.png)
+--></li>
+</ul>
+
+<div class="table">
+  <div class="table-contents">
+                       <table id="w87aac17c21c11b6">
+
+                          <tr bgcolor="#eeeeee">
+
+                             <td colspan="6" align="left" style="text-align: left;"><b>인바운드 </b></td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td><b>규칙 #</b></td>
+
+                             <td><b>Type</b></td>
+
+                             <td>
+                                <b>프로토콜</b></td>
+
+                             <td>
+                                <b>포트 범위 </b></td>
+
+                             <td><b>소스</b></td>
+
+                             <td>
+                                <b>허용/거부</b></td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td>
+
+                                <p>100</p>
+
+                             </td>
+
+                             <td>모든 IPv4 트래픽</td>
+
+                             <td>
+
+                                <p>모두</p>
+
+                             </td>
+
+                             <td>
+
+                                <p>모두</p>
+
+                             </td>
+
+                             <td>0.0.0.0/0</td>
+
+                             <td>
+
+                                <p>허용</p>
+
+                             </td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td>
+
+                                <p>*</p>
+
+                             </td>
+
+                             <td>모든 IPv4 트래픽</td>
+
+                             <td>
+
+                                <p>모두</p>
+
+                             </td>
+
+                             <td>
+
+                                <p>모두</p>
+
+                             </td>
+
+                             <td>0.0.0.0/0</td>
+
+                             <td>
+
+                                <p>DENY</p>
+
+                             </td>
+
+                          </tr>
+
+                          <tr bgcolor="#eeeeee">
+
+                             <td colspan="6" align="left" style="text-align: left;">
+                                <b>아웃바운드</b>
+
+                             </td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td><b>규칙 #</b></td>
+
+                             <td><b>Type</b></td>
+
+                             <td>
+                                <b>프로토콜</b>
+
+                             </td>
+
+                             <td>
+                                <b>포트 범위</b></td>
+
+                             <td><b>목적지</b></td>
+
+                             <td>
+                                <b>허용/거부</b></td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td>
+
+                                <p>100</p>
+
+                             </td>
+
+                             <td>모든 IPv4 트래픽</td>
+
+                             <td>
+
+                                <p>all</p>
+
+                             </td>
+
+                             <td>
+
+                                <p>all</p>
+
+                             </td>
+
+                             <td>0.0.0.0/0</td>
+
+                             <td>
+
+                                <p>허용</p>
+
+                             </td>
+
+                          </tr>
+
+                          <tr>
+
+                             <td>
+
+                                <p>*</p>
+
+                             </td>
+
+                             <td>모든 IPv4 트래픽</td>
+
+                             <td>
+
+                                <p>all</p>
+
+                             </td>
+
+                             <td>
+
+                                <p>all</p>
+
+                             </td>
+
+                             <td>0.0.0.0/0</td>
+
+                             <td>
+
+                                <p>DENY</p>
+
+                             </td>
+
+                          </tr>
+
+                       </table>
+                    </div></li>
+</ul>
+
+<h4 id="toc_24">3.3.4.3 사용자 지정 네트워크 ACL</h4>
+
+<div class="table">
+     <div class="table-contents">
+         <table id="w87aac17c21c13c10">
+           <tr bgcolor="#eeeeee">
+                <td colspan="7" align="left" style="text-align: left;">
+                    <b>인바운드</b>
+                </td>
+           </tr>
+             <tr>
+                <td><b>규칙 #</b>
+            </td><td><b>Type</b></td>
+                <td><b>프로토콜</b></td>
+                <td><b>포트 범위</b></td>
+                <td><b>소스</b></td>
+                <td><b>허용/거부</b></td>
+                <td><b>설명</b></td>
+             </tr>
+             <tr>
+                <td><p>100</p></td>
+                <td>HTTP</td>
+                <td><p>TCP</p></td>
+                <td><p>80</p></td>
+                <td>0.0.0.0/0</td>
+                <td><p>허용</p></td>
+                <td><p>어떤 IPv4 주소에서 이루어지는 인바운드 HTTP 트래픽도 모두 허용</p></td>
+             </tr>
+             <tr>
+                <td><p>110</p></td>
+                <td>HTTPS</td>
+                <td><p>TCP</p></td>
+                <td><p>443</p></td>
+                <td>0.0.0.0/0</td>
+                <td><p>허용</p></td>
+                <td><p>어떤 IPv4 주소에서 이루어지는 인바운드 HTTPS 트래픽도 모두 허용</p></td>
+             </tr>
+             <tr>
+                <td><p>120</p></td>
+                <td>SSH</td>
+                <td><p>TCP</p></td>
+                <td><p>22</p></td>
+                <td>192.0.2.0/24</td>
+                <td><p>허용</p></td>
+                <td><p>홈 네트워크의 퍼블릭 IPv4 주소 범위로부터의 인바운드 SSH 트래픽을 허용(인터넷 게이트웨이를 통해)</p></td>
+             </tr>
+             <tr>
+                <td><p>130</p></td>
+                <td>RDP</td>
+                <td><p>TCP</p></td>
+                <td><p>3389</p></td>
+                <td>192.0.2.0/24</td>
+                <td><p>허용</p></td>
+                <td><p>홈 네트워크의 퍼블릭 IPv4 주소 범위로부터 웹 서버로의 인바운드 RDP 트래픽을 허용(인터넷 게이트웨이를 통해) </p></td>
+             </tr>
+             <tr>
+                <td><p>140</p></td>
+                <td>사용자 지정 TCP</td>
+                <td><p>TCP</p></td>
+                <td><p>32768-65535</p></td>
+                <td>0.0.0.0/0</td>
+                <td><p>허용</p></td>
+                <td><p>인터넷으로부터의 인바운드 리턴 IPv4 트래픽을 허용(즉, 서브넷에서 시작되는 요청에 대해).</p><p>이 범위는 예시일 뿐입니다. </p></td>
+             </tr>
+             <tr>
+                <td><p>*</p></td>
+                <td>모든 트래픽</td>
+                <td><p>모두</p></td>
+                <td><p>모두</p></td>
+                <td>0.0.0.0/0</td>
+                <td><p>DENY</p></td>
+                <td><p>이전 규칙에서 아직 처리하지 않은 모든 인바운드 IPv4 트래픽 거부(수정 불가)</p></td>
+             </tr>
+             <tr bgcolor="#eeeeee">
+                <td colspan="7" align="left" style="text-align: left;">
+                                    <b>아웃바운드</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    <b>규칙 #</b>
+                                    
+                                 </td>
+                                 
+                                 <td><b>Type</b></td>
+                                 
+                                 <td>
+                                    <b>프로토콜</b>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    <b>포트 범위</b>
+                                    
+                                 </td>
+                                 
+                                 <td><b>목적지</b></td>
+                                 
+                                 <td>
+                                    <b>허용/거부</b>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    <b>설명</b>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>100</p>
+                                    
+                                 </td>
+                                 
+                                 <td>HTTP</td>
+                                 
+                                 <td>
+                                    
+                                    <p>TCP</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>80</p>
+                                    
+                                 </td>
+                                 
+                                 <td>0.0.0.0/0</td>
+                                 
+                                 <td>
+                                    
+                                    <p>허용</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>서브넷에서 인터넷으로의 아웃바운드 IPv4 HTTP 트래픽을 허용</p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>110</p>
+                                    
+                                 </td>
+                                 
+                                 <td>HTTPS</td>
+                                 
+                                 <td>
+                                    
+                                    <p>TCP</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>443</p>
+                                    
+                                 </td>
+                                 
+                                 <td>0.0.0.0/0</td>
+                                 
+                                 <td>
+                                    
+                                    <p>허용</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>서브넷에서 인터넷으로의 아웃바운드 IPv4 HTTPS 트래픽을 허용</p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>120</p>
+                                    
+                                 </td>
+                                 
+                                 <td>사용자 지정 TCP</td>
+                                 
+                                 <td>
+                                    
+                                    <p>TCP</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>32768-65535</p>
+                                    
+                                 </td>
+                                 
+                                 <td>0.0.0.0/0</td>
+                                 
+                                 <td>
+                                    
+                                    <p>허용</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>인터넷에서 클라이언트에 대한 아웃바운드 IPv4 응답을 허용(예: 서브넷에 있는 웹 서버를 방문하는 사람들에게 웹 페이지 제공).</p>
+                                    
+                                    <p>이 범위는 예시일 뿐입니다.                                     </p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                              <tr>
+                                 
+                                 <td>
+                                    
+                                    <p>*</p>
+                                    
+                                 </td>
+                                 
+                                 <td>모든 트래픽</td>
+                                 
+                                 <td>
+                                    
+                                    <p>모두</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>모두</p>
+                                    
+                                 </td>
+                                 
+                                 <td>0.0.0.0/0</td>
+                                 
+                                 <td>
+                                    
+                                    <p>DENY</p>
+                                    
+                                 </td>
+                                 
+                                 <td>
+                                    
+                                    <p>이전 규칙에서 아직 처리하지 않은 모든 아웃바운드 IPv4 트래픽 거부(수정 불가)</p>
+                                    
+                                 </td>
+                                 
+                              </tr>
+                              
+                           </table>
+                        </div>
+
+<h4 id="toc_25">3.3.4.3 보안 그룹 및 네트워크 ACL 비교</h4>
+
+<table>
+<thead>
+<tr>
+<th>보안 그룹</th>
+<th>네트워크 ACL</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>인스턴스 수준에서의 적용(1차 보안 계층)</td>
+<td>서브넷 수준에서의 적용(2차 보안 계층)</td>
+</tr>
+<tr>
+<td>허용 규칙만 지원</td>
+<td>허용 및 거부 규칙 지원</td>
+</tr>
+<tr>
+<td><strong>상태 저장</strong>: 규칙에 관계없이 반환 트래픽이 자동으로 허용됨</td>
+<td><strong>상태 비저장</strong>: 반환 트래픽이 규칙에 의해 명시적으로 허용되어야 함</td>
+</tr>
+<tr>
+<td>트래픽 허용 여부를 결정하기 전에 모든 규칙을 평가함</td>
+<td>트래픽 허용 여부를 결정 시 규칙을 번호순으로 처리함</td>
+</tr>
+<tr>
+<td>인스턴스 시작 시 누군가 보안 그룹을 지정하거나, 나중에 보안 그룹을 인스턴스와 연결하는 경우에만 인스턴스에 적용됨</td>
+<td>연결된 서브넷에서 모든 인스턴스에 자동 적용됨(백업 보안 계층이므로 보안 그룹을 지정하는 사람에게 의존할 필요 없음)</td>
+</tr>
+</tbody>
+</table>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
