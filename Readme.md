@@ -31,10 +31,7 @@
 - [Amazon RDS 확장 (Scaling)](docs/rds_scaling.md)
 
 ## VPC
-- Amazon VPC 소개
-- Amazon VPC 시작하기
-- Amazon VPC 주요개념 1
-- Amazon VPC 주요개념 2
+- [Amazon VPC](docs/vpc.md)
 - Amazon Route 53
 
 ## IAM
