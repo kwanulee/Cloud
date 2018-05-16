@@ -32,7 +32,7 @@
 
 ## VPC
 - [Amazon VPC](docs/vpc.md)
-- Amazon Route 53
+- [Amazon Route 53](docs/route53.md)
 
 ## IAM
 - Amazon IAM 소개
