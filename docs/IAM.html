@@ -683,11 +683,7 @@ div.polaroid {
     &quot;Action&quot;: &quot;s3:ListBucket&quot;,
     &quot;Resource&quot;: &quot;arn:aws:s3:::example_bucket&quot;
     }
-}</code></pre></div>
-
-<ul>
-<li>us-east-2 리전 내 123456789012 계정의 Books 테이블에서 모든 Amazon DynamoDB 작업(dynamodb:*)을 수행할 수 있는 권한을 부여하는 정책</li>
-</ul></li>
+}</code></pre></div></li>
 </ul>
 
 <h4 id="toc_24">3.1.1 IAM 사용자 및 정책</h4>
@@ -697,11 +693,7 @@ div.polaroid {
 
 <ul>
 <li>사용자에게 연결된 정책인 자격 증명 기반 정책을 생성하여 사용자에게 권한을 부여합니다.</li>
-<li>명시적으로 허용되지 않은 작업 또는 리소스는 기본적으로 모두 거부됩니다.
-
-<ul>
-<li>예를 들어 위 정책이 사용자에게 연결된 유일한 정책이라면 이 사용자는 Books 테이블에서만 DynamoDB 작업을 수행할 수 있습니다. 다른 모든 테이블에 대한 작업은 금지됩니다. 마찬가지로 사용자는 Amazon EC2, Amazon S3 또는 다른 모든 AWS 서비스에서 어떤 작업도 수행할 수 없습니다.<br></li>
-</ul></li>
+<li>명시적으로 허용되지 않은 작업 또는 리소스는 기본적으로 모두 거부됩니다.</li>
 </ul></li>
 </ul>
 
