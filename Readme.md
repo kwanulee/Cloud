@@ -32,12 +32,14 @@
 
 ## VPC
 - [Amazon VPC](docs/vpc.md)
+
+## Route53
 - [Amazon Route 53](docs/route53.md)
 
 ## IAM
-- [Amazon IAM](docs/iam.md)
+- [Amazon IAM](docs/IAM.md)
 
 ## Elastic Beanstalk
 - [Amazon Elastic Beanstalk 소개](docs/elastic_beanstalk.md#1)
 - [Amazon Elastic Beanstalk 시작하기](https://docs.aws.amazon.com/ko_kr/elasticbeanstalk/latest/dg/GettingStarted.html)
-- [AWS EB 활용](docs/elastic_beanstalk.md#3)
+- [AWS EB 활용](https://kwanulee.github.io/Cloud/elastic_beanstalk.html#3)
