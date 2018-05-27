@@ -35,10 +35,9 @@
 - [Amazon Route 53](docs/route53.md)
 
 ## IAM
-- Amazon IAM 소개
-- Amazon IAM 실습
+- [Amazon IAM](docs/iam.md)
 
 ## Elastic Beanstalk
-- Amazon Elastic Beanstalk 소개
-- Amazon Elastic Beanstalk 시작하기
-- 애플리케이션 타입별로 AWS EB 활용
+- [Amazon Elastic Beanstalk 소개](docs/elastic_beanstalk.md#1)
+- [Amazon Elastic Beanstalk 시작하기](https://docs.aws.amazon.com/ko_kr/elasticbeanstalk/latest/dg/GettingStarted.html)
+- [AWS EB 활용](docs/elastic_beanstalk.md#3)
